@@ -1,0 +1,15 @@
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\bin\Debug\netstandard2.0\BattleShots.deps.json
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\bin\Debug\netstandard2.0\BattleShots.dll
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\bin\Debug\netstandard2.0\BattleShots.pdb
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\BattleShots.csprojAssemblyReference.cache
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\BattleShots.csproj.CoreCompileInputs.cache
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\BattleShots.AssemblyInfoInputs.cache
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\BattleShots.AssemblyInfo.cs
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\BattleShots.dll
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\BattleShots.pdb
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\StartPage.xaml.g.cs
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\SetupGame.xaml.g.cs
+C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\SetupGame2.xaml.g.cs
