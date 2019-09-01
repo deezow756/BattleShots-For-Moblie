@@ -2006,11 +2006,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots.Android\\BattleShots.Android.csproj",
+      "projectUniqueName": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots.Android\\BattleShots.Android.csproj",
       "projectName": "BattleShots.Android",
-      "projectPath": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots.Android\\BattleShots.Android.csproj",
+      "projectPath": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots.Android\\BattleShots.Android.csproj",
       "packagesPath": "C:\\Users\\dorre\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots.Android\\obj\\",
+      "outputPath": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots.Android\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
@@ -2031,8 +2031,8 @@
       "frameworks": {
         "monoandroid90": {
           "projectReferences": {
-            "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj": {
-              "projectPath": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj"
+            "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj": {
+              "projectPath": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj"
             }
           }
         }

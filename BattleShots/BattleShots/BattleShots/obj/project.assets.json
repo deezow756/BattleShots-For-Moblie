@@ -563,11 +563,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj",
+      "projectUniqueName": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj",
       "projectName": "BattleShots",
-      "projectPath": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj",
+      "projectPath": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj",
       "packagesPath": "C:\\Users\\dorre\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\obj\\",
+      "outputPath": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",

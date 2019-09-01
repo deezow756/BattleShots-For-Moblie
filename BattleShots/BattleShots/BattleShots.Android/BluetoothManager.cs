@@ -85,7 +85,6 @@ namespace BattleShots.Droid
             }
             else
             {
-                TryEnableBluetooth();
                 return null;
             }
         }
@@ -104,11 +103,19 @@ namespace BattleShots.Droid
 
         public void StopDiscoveringDevices()
         {
-            this.BtAdapter.CancelDiscovery();
-
-            BGData.activity.UnregisterReceiver(this);
-
-            Names.Clear();
+            if (BtAdapter.IsEnabled)
+            {
+                BtAdapter.CancelDiscovery();
+                try
+                {
+                    BGData.activity.UnregisterReceiver(this);
+                    Names.Clear();
+                }
+                catch(Exception ex)
+                {
+                    Names.Clear();
+                }
+            }
         }
 
         public void EnableDiscoverable()
@@ -117,10 +124,6 @@ namespace BattleShots.Droid
             {
                 Intent discoverableIntent = new Intent(BluetoothAdapter.ActionRequestDiscoverable);
                 BGData.activity.StartActivityForResult(discoverableIntent, 300);
-            }
-            else
-            {
-                TryEnableBluetooth();
             }
         }
 
@@ -186,6 +189,8 @@ namespace BattleShots.Droid
                     try
                     {
                         await Socket.ConnectAsync();
+                        FileManager file = new FileManager();
+                        file.SaveDevice(name);
                         Master = true;
                         ToastLoader toastLoader = new ToastLoader();
                         toastLoader.Show("Connected To Player");
@@ -202,130 +207,204 @@ namespace BattleShots.Droid
                 }
             }
         }
-        public async void PairToDevice(BluetoothDevice Device)
+
+        public bool Pairing = false;
+        public void PairToDevice()
         {
-            if (BtAdapter.IsEnabled)
+            Task.Run(async () =>
             {
-                if (BtAdapter.IsDiscovering)
+                
+                if (BtAdapter.IsEnabled)
                 {
-                    BtAdapter.CancelDiscovery();
-                }
-
-                ReceivingConnection = false;
-
-                UUID uuid = UUID.FromString("00001101-0000-1000-8000-00805f9b34fb");
-
-                if ((int)Android.OS.Build.VERSION.SdkInt >= 10) // Gingerbread 2.3.3 2.3.4
-                    Socket = Device.CreateInsecureRfcommSocketToServiceRecord(uuid);
-                else
-                    Socket = Device.CreateRfcommSocketToServiceRecord(uuid);
-
-                if (Socket != null)
-                {
+                    if (BtAdapter.IsDiscovering)
+                    {
+                        BtAdapter.CancelDiscovery();
+                    }
+                    List<BluetoothDevice> devices = BtAdapter.BondedDevices.ToList();
+                    BluetoothDevice tempDevice = null;
+                    string tempstring = "";
+                    FileManager file = new FileManager();
                     try
                     {
-                        await Socket.ConnectAsync();
-                        Master = true;
-                        BGData.CurrentDevice = Device;
-                        
-                        ToastLoader toastLoader = new ToastLoader();
-                        toastLoader.Show("Connected To Player");
-                        SetupChat();
-                        if (BGStuff.Reconnecting)
+                            tempstring = file.GetDevice();
+                    }
+                    catch(Exception ex)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
                         {
-                            if (BGStuff.settingUpGame)
-                            {
-                                await BGStuff.setupGame.Navigation.PopAsync();
-                                BGStuff.Reconnecting = false;
-                            }
+                            ToastLoader toast = new ToastLoader();
+                            toast.Show(ex.Message);
+                        });
+                    }
+                    await Task.Delay(3000);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        ToastLoader toast = new ToastLoader();
+                        toast.Show(tempstring);
+                    });
+                    await Task.Delay(5000);
+                    for (int i = 0; i < devices.Count; i++)
+                    {
+                        if(tempstring == devices[i].Name)
+                        {
+                            tempDevice = devices[i];
                         }
+                    }
+
+                    ReceivingConnection = false;
+                    UUID uuid = UUID.FromString("00001101-0000-1000-8000-00805f9b34fb");
+                    BluetoothSocket temp = null;
+                    try
+                    {
+                        if ((int)Android.OS.Build.VERSION.SdkInt >= 10) // Gingerbread 2.3.3 2.3.4
+                            temp = tempDevice.CreateInsecureRfcommSocketToServiceRecord(uuid);
                         else
-                        {
-                            MainPage.StatSetupGame();
-                        }
+                            temp = tempDevice.CreateRfcommSocketToServiceRecord(uuid);
+
+                        Socket = temp;
                     }
                     catch (Exception ex)
                     {
-                        ToastLoader toastLoader = new ToastLoader();
-                        toastLoader.Show(ex.Message);
-                        ReceivingConnection = true;
-                        ReceivePair();
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            ToastLoader toastLoader = new ToastLoader();
+                            toastLoader.Show(ex.Message);
+                        });
+                    }
+
+                    if (Socket != null)
+                    {
+                        try
+                        {
+                            await Socket.ConnectAsync();
+                            Master = true;
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                ToastLoader toastLoader = new ToastLoader();
+                                toastLoader.Show("Connected To Player");
+                            });
+                            SetupChat();
+                            if (BGStuff.Reconnecting)
+                            {
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    BGStuff.reconnectionPage.Navigation.PopAsync();
+                                });
+                                BGStuff.Reconnecting = false;
+                                Pairing = false;
+                                BGStuff.reconnectionPage = null;
+                            }
+                            else
+                            {
+                                MainPage.StatSetupGame();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            if (!BGStuff.Reconnecting)
+                            {
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    ToastLoader toastLoader = new ToastLoader();
+                                    toastLoader.Show(ex.Message);
+                                });
+                                    ReceivingConnection = true;
+                                    ReceivePair();                                
+                            }
+                            else
+                            {
+                                Device.BeginInvokeOnMainThread(() =>
+                                {
+                                    ToastLoader toastLoader = new ToastLoader();
+                                    toastLoader.Show(ex.Message);
+                                });
+                            }
+                            
+                        }
                     }
                 }
-            }
+            });
         }
 
         public void ReceivePair()
         {
-            if (BtAdapter.IsEnabled && !ReceivingConnection)
+            Task.Run(() =>
             {
-                BluetoothServerSocket tmp = null;
+                if (BtAdapter.IsEnabled && !ReceivingConnection)
+                {
+                    BluetoothServerSocket tmp = null;
+                    try
+                    {
+                        // MY_UUID is the app's UUID string, also used by the client code.
+                        tmp = BtAdapter.ListenUsingRfcommWithServiceRecord("BattleShots", UUID.FromString("00001101-0000-1000-8000-00805f9b34fb"));
+                    }
+                    catch (Exception e)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            ToastLoader toastLoader = new ToastLoader();
+                            toastLoader.Show(e.Message);
+                        });
+                    }
+                    mmServerSocket = tmp;
+                    ReceivingConnection = true;
+
+                    CheckForPair();
+                }
+            });
+        }
+        private void CheckForPair()
+        {
+            BluetoothSocket socket = null;
+            // Keep listening until exception occurs or a socket is returned.
+            while (ReceivingConnection)
+            {
                 try
                 {
-                    // MY_UUID is the app's UUID string, also used by the client code.
-                    tmp = BtAdapter.ListenUsingRfcommWithServiceRecord("BattleShots", UUID.FromString("00001101-0000-1000-8000-00805f9b34fb"));
+                    socket = mmServerSocket.Accept();
+
+                    if (socket != null)
+                    {
+                        // A connection was accepted. Perform work associated with
+                        // the connection in a separate thread.
+                        //ManageMyConnectedSocket(socket);
+                        Socket = socket;
+                        Master = false;
+                        ReceivingConnection = false;
+                        mmServerSocket.Close();
+                        FileManager file = new FileManager();
+                        file.SaveDevice(Socket.RemoteDevice.Name);
+                        SetupChat();
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            ToastLoader toast = new ToastLoader();
+                            toast.Show("Connected With Player");
+
+                            if (BGStuff.Reconnecting)
+                            {
+                                if (BGStuff.settingUpGame)
+                                {
+                                    BGStuff.reconnectionPage.Navigation.PopAsync();
+                                    BGStuff.Reconnecting = false;
+                                    BGStuff.reconnectionPage = null;
+                                }
+                            }
+                            else
+                            {
+                                MainPage.StatSetupGame();
+                            }
+                        });
+                    }
                 }
                 catch (Exception e)
                 {
-                    ToastLoader toastLoader = new ToastLoader();
-                    toastLoader.Show(e.Message);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        ToastLoader toastLoader = new ToastLoader();
+                        toastLoader.Show(e.Message);
+                    });
                 }
-                mmServerSocket = tmp;
-                ReceivingConnection = true;
-
-                CheckForPair();
             }
-        }
-        private async void CheckForPair()
-        {
-            await Task.Run(() =>
-             {
-                 BluetoothSocket socket = null;
-                // Keep listening until exception occurs or a socket is returned.
-                while (ReceivingConnection)
-                 {
-                     try
-                     {
-                         socket = mmServerSocket.Accept();
-
-                         if (socket != null)
-                         {
-                             // A connection was accepted. Perform work associated with
-                             // the connection in a separate thread.
-                             //ManageMyConnectedSocket(socket);
-                             Socket = socket;
-                             Master = false;                             
-                             ReceivingConnection = false;
-                             mmServerSocket.Close();
-                             BGData.CurrentDevice = socket.RemoteDevice;
-                             SetupChat();                             
-                             Device.BeginInvokeOnMainThread(() =>
-                             {
-                                 ToastLoader toast = new ToastLoader();
-                                 toast.Show("Connected With Player");
-
-                                 if (BGStuff.Reconnecting)
-                                 {
-                                     if (BGStuff.settingUpGame)
-                                     {
-                                         BGStuff.setupGame.Navigation.PopAsync();
-                                         BGStuff.Reconnecting = false;
-                                     }
-                                 }
-                                 else
-                                 {
-                                     MainPage.StatSetupGame();
-                                 }
-                             });
-                         }
-                     }
-                     catch (Exception e)
-                     {
-                         ToastLoader toastLoader = new ToastLoader();
-                         toastLoader.Show(e.Message);
-                     }                     
-                 }
-             });
         }      
         
         public void SetupChat()
@@ -383,11 +462,12 @@ namespace BattleShots.Droid
                                 else
                                 {
                                     SetupGame.StatGoToSetup2();
-                                }
-                                buffer = new byte[1028];
+                                }                               
                             }
+                            buffer = new byte[1028];
                         }
                     }
+                    Reconnect();
                 }
                 catch(Exception ex)
                 {
@@ -395,8 +475,11 @@ namespace BattleShots.Droid
                     {
                         ToastLoader toast = new ToastLoader();
                         toast.Show("Connection Lost");
-                        Reconnect();
+                        if(BGStuff.settingUpGame)
+                        { BGStuff.setupGame.Reconnect(); }
+                        
                     });
+                    Reconnect();
                 }
             });
         }
@@ -433,49 +516,79 @@ namespace BattleShots.Droid
             return Master;
         }
 
-        public async void Reconnect()
+        public void Reconnect()
         {
-            BGStuff.Reconnecting = true;
-
-            while (BGStuff.Reconnecting)
+            Task.Run(async () =>
             {
-                if (BGStuff.settingUpGame)
-                {
-                    await BGStuff.setupGame.Navigation.PushAsync(new ReconnectionPage());
-                    Socket = null;
-                    if (!Master)
+                BGStuff.Reconnecting = true;
+
+                while (BGStuff.Reconnecting)
+                {      
+                    if (!BtAdapter.IsEnabled)
                     {
-                        ReceivePair();
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            TryEnableBluetooth();
+                        });
+                        await Task.Delay(5000);
                     }
                     else
-                    {
-                        await Task.Delay(100);
-                        PairToDevice(BGData.CurrentDevice);
+                    {                        
+                        if (!Master)
+                        {
+                            if (!ReceivingConnection)
+                            {
+                                Socket.Close();
+                                Socket.Dispose();
+                                Socket = null;
+                                ReceivePair();
+                            }
+                        }
+                        else
+                        {
+                            if (!Pairing)
+                            {
+                                Socket.Close();
+                                Socket.Dispose();
+                                Socket = null;
+                                PairToDevice();                                
+                            }
+                            await Task.Delay(10000);
+                        }
                     }
                 }
-            }
+            });
         }
 
         public void CancelReconnection()
         {
-            try
+            Task.Run(() =>
             {
-                BGStuff.Reconnecting = false;
-                ReceivingConnection = false;
-                Socket = null;
+                try
+                {
+                    BGStuff.Reconnecting = false;
+                    ReceivingConnection = false;
+                    Socket = null;
 
-                if (BGStuff.settingUpGame)
-                {
-                    BGStuff.setupGame.Navigation.PopToRootAsync();
+                    if (BGStuff.settingUpGame)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            BGStuff.setupGame.Navigation.PopToRootAsync();
+                        });
+                    }
                 }
-            }
-            catch(Exception ex)
-            {
-                if (BGStuff.settingUpGame)
+                catch (Exception ex)
                 {
-                    BGStuff.setupGame.Navigation.PopToRootAsync();
+                    if (BGStuff.settingUpGame)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            BGStuff.setupGame.Navigation.PopToRootAsync();
+                        });
+                    }
                 }
-            }
+            });
         }
     }
 }

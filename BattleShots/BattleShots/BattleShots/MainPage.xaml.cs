@@ -56,6 +56,12 @@ namespace BattleShots
             }
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            StopScanning();
+        }
+
         public void GetKnownDevices()
         {            
             lstPairedDevices.ItemsSource = null;

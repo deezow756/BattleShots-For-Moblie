@@ -145,6 +145,11 @@ namespace BattleShots
             Navigation.PushAsync(new SetupGame2(bluetooth));
         }
 
+        public void Reconnect()
+        {
+            Navigation.PushAsync(new ReconnectionPage(bluetooth));
+        }
+
         #region Theme Stuff
         public List<Button> Buttons = new List<Button>();
         public List<Label> Labels = new List<Label>();

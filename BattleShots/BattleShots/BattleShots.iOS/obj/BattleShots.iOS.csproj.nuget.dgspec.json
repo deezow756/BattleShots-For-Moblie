@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots.iOS\\BattleShots.iOS.csproj": {}
+    "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots.iOS\\BattleShots.iOS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots.iOS\\BattleShots.iOS.csproj": {
+    "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots.iOS\\BattleShots.iOS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots.iOS\\BattleShots.iOS.csproj",
+        "projectUniqueName": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots.iOS\\BattleShots.iOS.csproj",
         "projectName": "BattleShots.iOS",
-        "projectPath": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots.iOS\\BattleShots.iOS.csproj",
+        "projectPath": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots.iOS\\BattleShots.iOS.csproj",
         "packagesPath": "C:\\Users\\dorre\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots.iOS\\obj\\",
+        "outputPath": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots.iOS\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [
@@ -32,8 +32,8 @@
         "frameworks": {
           "xamarinios10": {
             "projectReferences": {
-              "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj": {
-                "projectPath": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj"
+              "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj": {
+                "projectPath": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj"
               }
             }
           }
@@ -65,14 +65,14 @@
         }
       }
     },
-    "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj": {
+    "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj",
+        "projectUniqueName": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj",
         "projectName": "BattleShots",
-        "projectPath": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj",
+        "projectPath": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\BattleShots.csproj",
         "packagesPath": "C:\\Users\\dorre\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dorre\\Desktop\\BattleShots\\BattleShots\\BattleShots\\obj\\",
+        "outputPath": "C:\\Users\\dorre\\Documents\\GitHub\\BattleShots-For-Moble\\BattleShots\\BattleShots\\BattleShots\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",

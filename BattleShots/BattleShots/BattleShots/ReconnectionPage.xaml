@@ -8,6 +8,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label x:Name="txtTrying" Text="Trying To Reconnect" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+            <Button x:Name="btnCancel" Text="Cancel" Clicked="BtnCancel_Clicked" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -12,10 +12,15 @@ namespace BattleShots
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ReconnectionPage : ContentPage
     {
-        public ReconnectionPage()
+        BluetoothMag bluetooth;
+
+        public ReconnectionPage(BluetoothMag bluetooth)
         {
             InitializeComponent();
+            BGStuff.reconnectionPage = this;
+            this.bluetooth = bluetooth;
             Labels.Add(txtTrying);
+            Buttons.Add(btnCancel);
             ApplyTheme();
         }
 
@@ -62,5 +67,10 @@ namespace BattleShots
             }
         }
         #endregion
+
+        private void BtnCancel_Clicked(object sender, EventArgs e)
+        {
+            bluetooth.CancelReconnection();
+        }
     }
 }
