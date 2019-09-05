@@ -20,6 +20,7 @@ namespace BattleShots.Droid
 {
     public class BluetoothManager : BroadcastReceiver, IBluetooth
     {
+        public bool BtBeingEnabled { get; set; }
         public BluetoothSocket Socket { get; set; }
         public BluetoothServerSocket mmServerSocket { get; set; }
         public bool ReceivingConnection { get; set; }
@@ -44,6 +45,7 @@ namespace BattleShots.Droid
             BGData.bluetoothDevices = new List<BluetoothDevice>();
             ReceivingConnection = false;
             Reading = false;
+            BtBeingEnabled = false;
         }
 
         public void SetupBt()
@@ -52,7 +54,11 @@ namespace BattleShots.Droid
 
             if (BtAdapter.IsEnabled == false)
             {
-                TryEnableBluetooth();
+                if (!BtBeingEnabled)
+                {
+                    BtBeingEnabled = true;
+                    TryEnableBluetooth();                    
+                }
             }
         }
 
@@ -85,6 +91,11 @@ namespace BattleShots.Droid
             }
             else
             {
+                if (!BtBeingEnabled)
+                {
+                    BtBeingEnabled = true;
+                    TryEnableBluetooth();
+                }
                 return null;
             }
         }
@@ -98,6 +109,14 @@ namespace BattleShots.Droid
                 BGData.activity.RegisterReceiver(this, new IntentFilter(BluetoothDevice.ActionFound));
 
                 this.BtAdapter.StartDiscovery();
+            }
+            else
+            {
+                if (!BtBeingEnabled)
+                {
+                    BtBeingEnabled = true;
+                    TryEnableBluetooth();
+                }
             }
         }
 
@@ -116,6 +135,11 @@ namespace BattleShots.Droid
                     Names.Clear();
                 }
             }
+            if (!BtBeingEnabled)
+            {
+                BtBeingEnabled = true;
+                TryEnableBluetooth();
+            }
         }
 
         public void EnableDiscoverable()
@@ -124,6 +148,11 @@ namespace BattleShots.Droid
             {
                 Intent discoverableIntent = new Intent(BluetoothAdapter.ActionRequestDiscoverable);
                 BGData.activity.StartActivityForResult(discoverableIntent, 300);
+            }
+            if (!BtBeingEnabled)
+            {
+                BtBeingEnabled = true;
+                TryEnableBluetooth();
             }
         }
 
@@ -154,6 +183,9 @@ namespace BattleShots.Droid
                 }
 
                 ReceivingConnection = false;
+
+                FileManager file = new FileManager();
+                file.SaveDevice(name);
 
                 BluetoothDevice Device = null;
                 if (known)
@@ -188,9 +220,7 @@ namespace BattleShots.Droid
                 {
                     try
                     {
-                        await Socket.ConnectAsync();
-                        FileManager file = new FileManager();
-                        file.SaveDevice(name);
+                        await Socket.ConnectAsync();                        
                         Master = true;
                         ToastLoader toastLoader = new ToastLoader();
                         toastLoader.Show("Connected To Player");
@@ -224,25 +254,15 @@ namespace BattleShots.Droid
                     BluetoothDevice tempDevice = null;
                     string tempstring = "";
                     FileManager file = new FileManager();
-                    try
-                    {
-                            tempstring = file.GetDevice();
-                    }
-                    catch(Exception ex)
-                    {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            ToastLoader toast = new ToastLoader();
-                            toast.Show(ex.Message);
-                        });
-                    }
-                    await Task.Delay(3000);
+                    tempstring = file.GetDevice();
+               
+                    await Task.Delay(300);
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         ToastLoader toast = new ToastLoader();
                         toast.Show(tempstring);
                     });
-                    await Task.Delay(5000);
+                    await Task.Delay(500);
                     for (int i = 0; i < devices.Count; i++)
                     {
                         if(tempstring == devices[i].Name)
@@ -281,7 +301,7 @@ namespace BattleShots.Droid
                             Device.BeginInvokeOnMainThread(() =>
                             {
                                 ToastLoader toastLoader = new ToastLoader();
-                                toastLoader.Show("Connected To Player");
+                                toastLoader.Show("Reconnected To Player");
                             });
                             SetupChat();
                             if (BGStuff.Reconnecting)
@@ -290,9 +310,11 @@ namespace BattleShots.Droid
                                 {
                                     BGStuff.reconnectionPage.Navigation.PopAsync();
                                 });
+                                await Task.Delay(500);
                                 BGStuff.Reconnecting = false;
                                 Pairing = false;
                                 BGStuff.reconnectionPage = null;
+                                ReadMessage();
                             }
                             else
                             {
@@ -375,25 +397,35 @@ namespace BattleShots.Droid
                         FileManager file = new FileManager();
                         file.SaveDevice(Socket.RemoteDevice.Name);
                         SetupChat();
-                        Device.BeginInvokeOnMainThread(() =>
+                        
+                        if (BGStuff.Reconnecting)
                         {
-                            ToastLoader toast = new ToastLoader();
-                            toast.Show("Connected With Player");
-
-                            if (BGStuff.Reconnecting)
+                            Device.BeginInvokeOnMainThread(() =>
                             {
-                                if (BGStuff.settingUpGame)
+                                ToastLoader toast = new ToastLoader();
+                                toast.Show("Reconnected With Player");
+                            });
+
+                            if (BGStuff.settingUpGame)
+                            {
+                                Device.BeginInvokeOnMainThread(() =>
                                 {
                                     BGStuff.reconnectionPage.Navigation.PopAsync();
-                                    BGStuff.Reconnecting = false;
-                                    BGStuff.reconnectionPage = null;
-                                }
+                                });
+                                BGStuff.Reconnecting = false;
                             }
-                            else
+                            ReadMessage();
+                        }
+                        else
+                        {
+                            Device.BeginInvokeOnMainThread(() =>
                             {
-                                MainPage.StatSetupGame();
-                            }
-                        });
+                                ToastLoader toast = new ToastLoader();
+                                toast.Show("Connected With Player");
+                            });
+                            MainPage.StatSetupGame();
+                        }
+                        
                     }
                 }
                 catch (Exception e)
@@ -456,6 +488,13 @@ namespace BattleShots.Droid
                                         Device.BeginInvokeOnMainThread(() =>
                                         {
                                             SetupGame.StatSetNumOfShotsEntry(split[0]);
+                                        });
+                                    }
+                                    else if (split[1].Contains("n"))
+                                    {
+                                        Device.BeginInvokeOnMainThread(() =>
+                                        {
+                                            SetupGame.StatSetEnemyName(split[0]);
                                         });
                                     }
                                 }

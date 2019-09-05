@@ -15,16 +15,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="ReconnectionPage.xaml">
+    <EmbeddedResource Update="Pages\Game.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="SetupGame.xaml">
+    <EmbeddedResource Update="Pages\ReconnectionPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="SetupGame2.xaml">
+    <EmbeddedResource Update="Pages\SetupGame.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="StartPage.xaml">
+    <EmbeddedResource Update="Pages\SetupGame2.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\StartPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

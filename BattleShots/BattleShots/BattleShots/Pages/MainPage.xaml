@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="BattleShots.MainPage"
+             x:Name="contentPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <StackLayout>
+        <Label x:Name="txtTitle" Text="Setup Connection" FontSize="Large" HorizontalOptions="CenterAndExpand"/>
+        <Button x:Name="btnKnownDevices" Text="Get Known Devices" Clicked="BtnKnownDevices_Clicked"/>
+        <Button x:Name="btnStartScan" Text="StartScan" Clicked="BtnStartScan_Clicked"/>
+        <Label x:Name="txtPairedDevices" Text="Paired Devices:" FontSize="Medium"/>
+        <ListView x:Name="lstPairedDevices" ItemTapped="LstPairedDevices_ItemTapped">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell Tapped="ViewCellKnown_Tapped" ClassId="{Binding Name}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Name}" TextColor="{Binding TextColour}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Label x:Name="txtNewDevices" Text="New Devices:" FontSize="Medium"/>
+        <ListView x:Name="lstDiscoveredDevices" ItemTapped="LstDiscoveredDevices_ItemTapped">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell Tapped="ViewCell_Tapped" ClassId="{Binding Name}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Name}" TextColor="{Binding TextColour}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button x:Name="btnDiscoverable" Text="Enable Discoverable" Clicked="BtnDiscoverable_Clicked"/>
+    </StackLayout>
+
+</ContentPage>
