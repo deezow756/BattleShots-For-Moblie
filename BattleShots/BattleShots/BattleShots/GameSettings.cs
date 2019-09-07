@@ -9,16 +9,17 @@ namespace BattleShots
     {
         public string YourName { get; set; }
         public string EnemyName { get; set; }
+        private int sizeOfGrid;
         public int SizeOfGrid
         {
             get
             {
-                return SizeOfGrid;
+                return sizeOfGrid;
             }
             set
             {
-                SizeOfGrid = value;
                 GridButtons = new Button[value, value];
+                sizeOfGrid = value;                
             }
         }
         public int NumOfShots { get; set; }

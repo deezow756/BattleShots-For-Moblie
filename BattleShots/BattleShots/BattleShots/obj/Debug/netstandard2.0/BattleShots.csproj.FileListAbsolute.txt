@@ -15,11 +15,6 @@ C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard
 C:\Users\dorre\Desktop\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\SetupGame2.xaml.g.cs
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\BattleShots.csprojAssemblyReference.cache
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\App.xaml.g.cs
-C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
-C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\ReconnectionPage.xaml.g.cs
-C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\SetupGame.xaml.g.cs
-C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\SetupGame2.xaml.g.cs
-C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\StartPage.xaml.g.cs
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\BattleShots.csproj.CoreCompileInputs.cache
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\BattleShots.AssemblyInfoInputs.cache
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\BattleShots.AssemblyInfo.cs
@@ -29,3 +24,9 @@ C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\Ba
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\bin\Debug\netstandard2.0\BattleShots.dll
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\bin\Debug\netstandard2.0\BattleShots.pdb
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\Pages\Game.xaml.g.cs
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\Pages\MainPage.xaml.g.cs
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\Pages\ReconnectionPage.xaml.g.cs
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\Pages\SetupGame.xaml.g.cs
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\Pages\SetupGame2.xaml.g.cs
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\Pages\StartPage.xaml.g.cs

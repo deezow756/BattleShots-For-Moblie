@@ -83,19 +83,19 @@ namespace BattleShots.Droid
                 {
                     ToastLoader toastLoader = new ToastLoader();
                     toastLoader.Show("Bluetooth Must Be Enabled To Play Game");
-                    BGData.btManager.BtBeingEnabled = false;
+                    BGData.btManager.BtBeingEnabled = true;
                     BGData.btManager.TryEnableBluetooth();
                 }
                 else
                 {
-                    BGData.btManager.BtBeingEnabled = false;
-                    if (BGStuff.settingUpGame == false && BGStuff.Reconnecting == false)
-                    {
-                        BGStuff.mainPage.GetKnownDevices();
-                        BGStuff.mainPage.StartScan();
-                        BGData.btManager.ReceivingConnection = true;
-                        BGData.btManager.ReceivePair();
-                    }                    
+                    //BGData.btManager.BtBeingEnabled = false;
+                    //if (BGStuff.settingUpGame == false && BGStuff.Reconnecting == false && BGStuff.ConnectionSetup == false)
+                    //{
+                    //    BGStuff.mainPage.GetKnownDevices();
+                    //    BGStuff.mainPage.StartScan();
+                    //    BGData.btManager.ReceivingConnection = true;
+                    //    BGData.btManager.ReceivePair();
+                    //}                    
                 }
             }
         }

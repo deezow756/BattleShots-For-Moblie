@@ -38,27 +38,22 @@ namespace BattleShots
             ApplyTheme();
             bluetoothMag = new BluetoothMag();
             bluetoothMag.SetupBt();
-            DeviceNames = new List<string>();
-            GetKnownDevices();
-            StartScan();
-            bluetoothMag.ReceivePair();
-            firstboot = true;
+            DeviceNames = new List<string>();            
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            if(firstboot)
-            {
-                GetKnownDevices();
-                StartScan();
-                bluetoothMag.ReceivePair();
-            }
+            BGStuff.ConnectionSetup = true;
+            GetKnownDevices();
+            StartScan();
+            bluetoothMag.ReceivePair();
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
+            BGStuff.ConnectionSetup = false;
             StopScanning();
         }
 
@@ -92,8 +87,7 @@ namespace BattleShots
         {
             if (Scanning)
             {
-                btnStartScan.Text = "Start Scanning";
-
+                Scanning = false;
                 StopScanning();
             }
             else
@@ -115,11 +109,11 @@ namespace BattleShots
         
         public async void CheckForChanges()
         {
+            DiscoveredBtDevices.Clear();
             if (Scanning)
             {
                 if (prevDeviceNames != DeviceNames)
-                {
-                    DiscoveredBtDevices.Clear();
+                {                    
                     for (int i = 0; i < DeviceNames.Count; i++)
                     {
                         DiscoveredBtDevices.Add(new BtDevice() { Name = DeviceNames[i], TextColour = Theme.LabelTextColour });
@@ -222,6 +216,7 @@ namespace BattleShots
         }
         public void SetupGame()
         {
+            BGStuff.ConnectionSetup = false;
             Navigation.PushAsync(new SetupGame(bluetoothMag));
         }
     }

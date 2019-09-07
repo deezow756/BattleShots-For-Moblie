@@ -390,9 +390,10 @@ namespace BattleShots.Droid
                         // A connection was accepted. Perform work associated with
                         // the connection in a separate thread.
                         //ManageMyConnectedSocket(socket);
+
+                        ReceivingConnection = false;
                         Socket = socket;
                         Master = false;
-                        ReceivingConnection = false;
                         mmServerSocket.Close();
                         FileManager file = new FileManager();
                         file.SaveDevice(Socket.RemoteDevice.Name);
@@ -420,10 +421,10 @@ namespace BattleShots.Droid
                         {
                             Device.BeginInvokeOnMainThread(() =>
                             {
+                                MainPage.StatSetupGame();
                                 ToastLoader toast = new ToastLoader();
                                 toast.Show("Connected With Player");
-                            });
-                            MainPage.StatSetupGame();
+                            });                            
                         }
                         
                     }
@@ -451,7 +452,7 @@ namespace BattleShots.Droid
                 catch(Exception ex)
                 {
                     ToastLoader toastLoader = new ToastLoader();
-                    toastLoader.Show(ex.Message);
+                    toastLoader.Show("Failed to SetupChat");
                 }
             }
         }
@@ -492,16 +493,25 @@ namespace BattleShots.Droid
                                     }
                                     else if (split[1].Contains("n"))
                                     {
-                                        Device.BeginInvokeOnMainThread(() =>
+                                         Device.BeginInvokeOnMainThread(() =>
                                         {
+                                            ToastLoader toast = new ToastLoader();
+                                            toast.Show(split[0]);
                                             SetupGame.StatSetEnemyName(split[0]);
                                         });
                                     }
                                 }
-                                else
+                                else if(message.Contains("Setup2"))
                                 {
-                                    SetupGame.StatGoToSetup2();
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        SetupGame.StatGoToSetup2();
+                                    });
                                 }                               
+                            }
+                            else if(BGStuff.settingUpGame2)
+                            {
+
                             }
                             buffer = new byte[1028];
                         }

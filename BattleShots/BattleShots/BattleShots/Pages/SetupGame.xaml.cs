@@ -26,6 +26,7 @@ namespace BattleShots
             bluetooth = bluetoothMag;
             BGStuff.setupGame = this;
             BGStuff.settingUpGame = true;
+            gameSettings = new GameSettings();
             Master = bluetoothMag.GetMaster();
             if(!Master)
             {
@@ -38,35 +39,32 @@ namespace BattleShots
             Labels.Add(txtSizeOfGrid);
             Labels.Add(txtNumOfShots);
             Entries.Add(entryNumOfShots);
-            Entries.Add(entryName);
+            Entries.Add(entName);
             Buttons.Add(btnContinue);
             Pickers.Add(pickerSizeOfBoard);
             ApplyTheme();
             bluetoothMag.ReadMessage();
-            gameSettings = new GameSettings();
         }
 
         private void PickerSizeOfBoard_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int SizeOfGrid = 0;
-            
+        {             
             switch(pickerSizeOfBoard.SelectedIndex)
             {
                 case 0:
-                    SizeOfGrid = 6;
+                    gameSettings.SizeOfGrid = 6;
                     break;
                 case 1:
-                    SizeOfGrid = 8;
+                    gameSettings.SizeOfGrid = 8;
                     break;
                 case 2:
-                    SizeOfGrid = 10;
+                    gameSettings.SizeOfGrid = 10;
                     break;
                 default:
-                    SizeOfGrid = 6;
+                    gameSettings.SizeOfGrid = 6;
                     break;
             }
 
-            bluetooth.SendMessage(SizeOfGrid + "," + "g");
+            bluetooth.SendMessage(gameSettings.SizeOfGrid + "," + "g");
         }
 
         public static void StatSetPicker(string SizeOfGrid)
@@ -76,7 +74,7 @@ namespace BattleShots
 
         public void SetPicker(string sizeOfGrid)
         {
-            SizeOfGrid = int.Parse(sizeOfGrid);
+            gameSettings.SizeOfGrid = int.Parse(sizeOfGrid);
             switch(sizeOfGrid)
             {
                 case "6":
@@ -108,7 +106,7 @@ namespace BattleShots
                     if (intTemp <= MaxNumOfShots)
                     {
                         bluetooth.SendMessage(intTemp.ToString() + ",s");
-                        NumOfShots = intTemp;
+                        gameSettings.NumOfShots = intTemp;
                     }
                     else
                     {
@@ -125,6 +123,7 @@ namespace BattleShots
             else
             {
                 bluetooth.SendMessage(",s");
+                gameSettings.NumOfShots = 0;
             }
         }
 
@@ -136,7 +135,36 @@ namespace BattleShots
         public void SetNumOfShotsEntry(string numOfShots)
         {
             entryNumOfShots.Text = numOfShots;
-            NumOfShots = int.Parse(numOfShots);
+            try
+            {
+                gameSettings.NumOfShots = int.Parse(numOfShots);
+            }
+            catch(Exception ex)
+            {
+                gameSettings.NumOfShots = 0;
+            }
+        }
+        private void EntName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string stringTemp = entName.Text;
+            if (string.IsNullOrEmpty(stringTemp) || stringTemp == "")
+            { stringTemp = ""; }
+            if (stringTemp != "")
+            {
+                try
+                {
+                        bluetooth.SendMessage(stringTemp + ",n");
+                        gameSettings.YourName = stringTemp;
+                }
+                catch (Exception ex)
+                {
+                    ToastManager.Show(ex.Message);
+                }
+            }
+            else
+            {
+                bluetooth.SendMessage(",n");
+            }
         }
 
         public static void StatSetEnemyName(string emName)
@@ -156,15 +184,36 @@ namespace BattleShots
 
         private void BtnContinue_Clicked(object sender, EventArgs e)
         {
-            bluetooth.SendMessage("Setup2");
-            GoToSetup2();
+            if ((gameSettings.EnemyName != null) && gameSettings.NumOfShots > 0 && gameSettings.SizeOfGrid > 0 && (gameSettings.YourName != null))
+            {
+                bluetooth.SendMessage("Setup2");
+                GoToSetup2();
+            }
+            else
+            {
+                if(gameSettings.EnemyName == null)
+                {
+                    ToastManager.Show("Enemy Not Entered Name Yet");
+                }
+                else if(gameSettings.NumOfShots == 0)
+                {
+                    ToastManager.Show("Number Of Shots Hasn't Been Selected");
+                }
+                else if (gameSettings.SizeOfGrid == 0)
+                {
+                    ToastManager.Show("Size Of Grid Hasn't Been Selected");
+                }
+                else if(gameSettings.YourName == null)
+                {
+                    ToastManager.Show("Please Enter A Name");
+                }
+            }
         }
 
         public void GoToSetup2()
         {
-            gameSettings.SizeOfGrid = SizeOfGrid;
-            gameSettings.NumOfShots = NumOfShots;
-            Navigation.PushAsync(new SetupGame2(bluetooth));
+            BGStuff.settingUpGame = false;
+            Navigation.PushAsync(new SetupGame2(bluetooth, gameSettings));
         }
 
         public void Reconnect()
@@ -205,22 +254,6 @@ namespace BattleShots
             }
         }
         #endregion
-
-        private void EntryName_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string stringTemp = entryName.Text;
-            if (string.IsNullOrEmpty(stringTemp) || stringTemp == "")
-            { stringTemp = ""; }
-            if (stringTemp != "")
-            {
-                bluetooth.SendMessage(entryName.Text + ",n");
-            }
-            else
-            {
-                bluetooth.SendMessage(",n");
-            }
-            gameSettings.YourName = entryName.Text;
-
-        }
+               
     }
 }

@@ -4,8 +4,9 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             Padding="5,5,5,5"
              x:Class="BattleShots.SetupGame2"
-             >
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <StackLayout x:Name="MainLayout">
             

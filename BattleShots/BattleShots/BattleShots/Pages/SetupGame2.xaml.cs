@@ -13,12 +13,16 @@ namespace BattleShots
     public partial class SetupGame2 : ContentPage
     {
         public BluetoothMag bluetooth { get; set; }
+        public GameSettings gameSettings { get; set; }
         public bool Master { get; set; }
-        public SetupGame2(BluetoothMag bluetoothMag)
+        public SetupGame2(BluetoothMag bluetoothMag, GameSettings gameSettings)
         {
             InitializeComponent();
             bluetooth = bluetoothMag;
+            this.gameSettings = gameSettings;
             Master = bluetooth.GetMaster();
+
+            SetupGameGrid setupGameGrid = new SetupGameGrid(MainLayout, gameSettings);
         }
 
         #region Theme Stuff

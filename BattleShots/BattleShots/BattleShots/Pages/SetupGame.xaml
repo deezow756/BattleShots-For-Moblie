@@ -5,12 +5,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="BattleShots.SetupGame"
+             Padding="5,5,5,5"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill">
-            <Label x:Name="txtEnterName" Text="Enter Your Name" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-            <Entry x:Name="entryName" TextChanged="EntryName_TextChanged" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+        <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill">            
             <Label x:Name="txtTitle" Text="Game Setup" FontSize="50" HorizontalOptions="CenterAndExpand"/>
+            <Label x:Name="txtEnterName" Text="Enter Your Name" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            <Entry x:Name="entName" Placeholder="Enter Name Here" TextChanged="EntName_TextChanged" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand"/>
             <StackLayout VerticalOptions="CenterAndExpand">
                 <Label x:Name="txtSizeOfGrid" Text="Size Of Grid" HorizontalOptions="CenterAndExpand"/>
                 <Picker x:Name="pickerSizeOfBoard" SelectedIndexChanged="PickerSizeOfBoard_SelectedIndexChanged">
@@ -26,7 +27,7 @@
             </StackLayout>
             <StackLayout VerticalOptions="CenterAndExpand">
                 <Label x:Name="txtNumOfShots" Text="Number Of Shots Each" HorizontalOptions="CenterAndExpand"/>
-                <Entry x:Name="entryNumOfShots" Keyboard="Numeric" TextChanged="EntryNumOfShots_TextChanged" HorizontalOptions="CenterAndExpand"/>
+                <Entry x:Name="entryNumOfShots" Keyboard="Numeric" TextChanged="EntryNumOfShots_TextChanged" HorizontalOptions="FillAndExpand"/>
 
             </StackLayout>
             <Button x:Name="btnContinue" Text="Continue" Clicked="BtnContinue_Clicked" VerticalOptions="EndAndExpand"/>

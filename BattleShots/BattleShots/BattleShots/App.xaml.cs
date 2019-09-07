@@ -11,7 +11,7 @@ namespace BattleShots
             InitializeComponent();
             DependencyService.Register<IBluetooth>();
             DependencyService.Register<IToastInterface>();
-            MainPage = new NavigationPage(new StartPage());
+            MainPage = new NavigationPage(new StartPage()) { BarBackgroundColor = Theme.BgColour};
         }
 
         protected override void OnStart()
