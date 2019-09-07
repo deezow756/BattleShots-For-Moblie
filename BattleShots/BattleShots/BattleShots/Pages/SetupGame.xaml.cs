@@ -46,6 +46,22 @@ namespace BattleShots
             bluetoothMag.ReadMessage();
         }
 
+        protected override bool OnBackButtonPressed()
+        {
+            Back();
+            return true;
+        }
+
+        private async void Back()
+        {
+            var result = await DisplayAlert("Alert!", "Are You Sure You Want To Exit Game?", "Yes", "No");
+
+            if (result)
+            {
+                Application.Current.Quit();
+            }
+        }
+
         private void PickerSizeOfBoard_SelectedIndexChanged(object sender, EventArgs e)
         {             
             switch(pickerSizeOfBoard.SelectedIndex)

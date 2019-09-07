@@ -15,14 +15,70 @@ namespace BattleShots
         public BluetoothMag bluetooth { get; set; }
         public GameSettings gameSettings { get; set; }
         public bool Master { get; set; }
+
+        public int ShotsLeft { get; set; }
         public SetupGame2(BluetoothMag bluetoothMag, GameSettings gameSettings)
         {
             InitializeComponent();
+            Labels.Add(txtTitle);
+            Labels.Add(txtShotsLabel);
+            Labels.Add(txtNumOfShotsLeft);
+            ApplyTheme();
             bluetooth = bluetoothMag;
             this.gameSettings = gameSettings;
+            BGStuff.setUpGame2 = this;
             Master = bluetooth.GetMaster();
+            bluetooth.ReadMessage();
+            txtNumOfShotsLeft.Text = gameSettings.NumOfShots.ToString();
+            SetupGameGrid setupGameGrid = new SetupGameGrid(this, MainLayout, gameSettings);
+        }
 
-            SetupGameGrid setupGameGrid = new SetupGameGrid(MainLayout, gameSettings);
+        #region OnBack
+        protected override bool OnBackButtonPressed()
+        {
+            Back();
+            return true;            
+        }
+
+        private async void Back()
+        {
+            var result = await DisplayAlert("Alert!", "Are You Sure You Want To Exit Game?", "Yes", "No");
+
+            if (result)
+            {
+                Application.Current.Quit();
+            }
+        }
+        #endregion
+
+        public void GridButton_Clicked(object sender, EventArgs e)
+        {
+            var btn = (Button)sender;
+            if (ShotsLeft > 0)
+            {
+                if (btn.Text != "X")
+                {
+                    ShotsLeft -= 1;
+                    btn.Text = "X";
+                    gameSettings.ShotCoodinates.Add(btn.ClassId);
+                }
+                else
+                {
+                    ShotsLeft += 1;
+                    btn.Text = "";
+                    gameSettings.ShotCoodinates.Remove(btn.ClassId);
+                }
+            }
+            else
+            {
+                if(btn.Text == "X")
+                {
+                    ShotsLeft += 1;
+                    btn.Text = "";
+                    gameSettings.ShotCoodinates.Remove(btn.ClassId);
+                }
+            }
+
         }
 
         #region Theme Stuff
@@ -68,5 +124,10 @@ namespace BattleShots
             }
         }
         #endregion
+
+        private void BtnContinue_Clicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }

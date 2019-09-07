@@ -7,11 +7,13 @@ namespace BattleShots
 {
     public class SetupGameGrid
     {
+        SetupGame2 SetupGame2;
         StackLayout mainStack;
         GameSettings gameSettings;
 
-        public SetupGameGrid(StackLayout mainStack, GameSettings gameSettings)
+        public SetupGameGrid(SetupGame2 setupGame2, StackLayout mainStack, GameSettings gameSettings)
         {
+            SetupGame2 = setupGame2;
             this.mainStack = mainStack;
             this.gameSettings = gameSettings;
             Execute();
@@ -19,17 +21,13 @@ namespace BattleShots
 
         public void Execute()
         {
-            StackLayout gridStack = new StackLayout();
-            gridStack.HorizontalOptions = LayoutOptions.FillAndExpand;
-            mainStack.Children.Add(gridStack);
-
             double buttonSize;
-            buttonSize = mainStack.Width / gameSettings.SizeOfGrid;
+            buttonSize = Application.Current.MainPage.Width / (gameSettings.SizeOfGrid + 1);
 
             for (int i = 0; i < gameSettings.SizeOfGrid; i++)
             {
                 StackLayout stack = new StackLayout();
-                stack.HorizontalOptions = LayoutOptions.FillAndExpand;
+                stack.Orientation = StackOrientation.Horizontal;
 
                 for (int j = 0; j < gameSettings.SizeOfGrid; j++)
                 {
@@ -40,34 +38,19 @@ namespace BattleShots
                         TextColor = Theme.ButtonTextColour,
                         ClassId = i.ToString() + "," + j.ToString(),
                         BorderWidth = 1,
-                        HeightRequest = buttonSize - 2,
-                        WidthRequest = buttonSize - 2
+                        HeightRequest = buttonSize,
+                        WidthRequest = buttonSize,
+                        MinimumHeightRequest = buttonSize,
+                        MinimumWidthRequest = buttonSize
                     };
-                    button.Clicked += Button_Clicked;
-
+                    button.Clicked += SetupGame2.GridButton_Clicked;
+                    stack.Children.Add(button);
                     gameSettings.GridButtons[i, j] = button;
                 }
 
-                gridStack.Children.Add(stack);
+                mainStack.Children.Add(stack);
             }
-
         }
-
-        private void Button_Clicked(object sender, EventArgs e)
-        {
-            var btn = (Button)sender;
-
-            if (btn.Text != "X")
-            {
-                btn.Text = "X";
-                gameSettings.ShotCoodinates.Add(btn.ClassId);
-            }
-            else
-            {
-                btn.Text = "";
-                gameSettings.ShotCoodinates.Remove(btn.ClassId);
-            }
-
-        }
+        
     }
 }

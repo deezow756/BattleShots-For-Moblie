@@ -19,7 +19,7 @@ namespace BattleShots.Droid
     {
         public void Show(string message)
         {
-            Toast.MakeText(Android.App.Application.Context, message, ToastLength.Long).Show();
+            Toast.MakeText(Android.App.Application.Context, message, ToastLength.Short).Show();
         }
     }
 }
