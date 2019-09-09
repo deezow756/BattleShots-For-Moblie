@@ -398,7 +398,7 @@ namespace BattleShots.Droid
                         FileManager file = new FileManager();
                         file.SaveDevice(Socket.RemoteDevice.Name);
                         SetupChat();
-                        
+
                         if (BGStuff.Reconnecting)
                         {
                             Device.BeginInvokeOnMainThread(() =>
@@ -407,14 +407,11 @@ namespace BattleShots.Droid
                                 toast.Show("Reconnected With Player");
                             });
 
-                            if (BGStuff.settingUpGame)
-                            {
-                                Device.BeginInvokeOnMainThread(() =>
+                            Device.BeginInvokeOnMainThread(() =>
                                 {
                                     BGStuff.reconnectionPage.Navigation.PopAsync();
                                 });
-                                BGStuff.Reconnecting = false;
-                            }
+                            BGStuff.Reconnecting = false;
                             ReadMessage();
                         }
                         else
@@ -424,7 +421,7 @@ namespace BattleShots.Droid
                                 MainPage.StatSetupGame();
                                 ToastLoader toast = new ToastLoader();
                                 toast.Show("Connected With Player");
-                            });                            
+                            });
                         }
                         
                     }
@@ -501,6 +498,18 @@ namespace BattleShots.Droid
                                         });
                                     }
                                 }
+                                else if(message.Contains("resume"))
+                                {
+                                    BGStuff.setupGame.ReceiveResume();
+                                }
+                                else if (message.Contains("accept"))
+                                {
+                                    BGStuff.setupGame.AcceptResume();
+                                }
+                                else if (message.Contains("reject"))
+                                {
+                                    BGStuff.setupGame.RejectResume();
+                                }
                                 else if(message.Contains("Setup2"))
                                 {
                                     Device.BeginInvokeOnMainThread(() =>
@@ -510,6 +519,17 @@ namespace BattleShots.Droid
                                 }                               
                             }
                             else if(BGStuff.settingUpGame2)
+                            {
+                                if (message.Contains("ready"))
+                                {
+                                    BGStuff.setUpGame2.SetEnemyReady(true);
+                                }
+                                else if(message.Contains("unready"))
+                                {
+                                    BGStuff.setUpGame2.SetEnemyReady(false);
+                                }
+                            }
+                            else if(BGStuff.InGame)
                             {
 
                             }
@@ -524,8 +544,19 @@ namespace BattleShots.Droid
                     {
                         ToastLoader toast = new ToastLoader();
                         toast.Show("Connection Lost");
+
                         if(BGStuff.settingUpGame)
-                        { BGStuff.setupGame.Reconnect(); }
+                        {
+                            BGStuff.setupGame.Reconnect();
+                        }
+                        else if(BGStuff.settingUpGame2)
+                        {
+                            BGStuff.setUpGame2.Reconnect();
+                        }
+                        else if(BGStuff.InGame)
+                        {
+                            BGStuff.game.Reconnect();
+                        }
                         
                     });
                     Reconnect();
@@ -602,7 +633,7 @@ namespace BattleShots.Droid
                                 Socket = null;
                                 PairToDevice();                                
                             }
-                            await Task.Delay(10000);
+                            await Task.Delay(2000);
                         }
                     }
                 }
@@ -619,25 +650,31 @@ namespace BattleShots.Droid
                     ReceivingConnection = false;
                     Socket = null;
 
-                    if (BGStuff.settingUpGame)
-                    {
-                        Device.BeginInvokeOnMainThread(() =>
+                    Device.BeginInvokeOnMainThread(() =>
                         {
-                            BGStuff.setupGame.Navigation.PopToRootAsync();
+                            BGStuff.reconnectionPage.Navigation.PopToRootAsync();
                         });
-                    }
+
                 }
                 catch (Exception ex)
                 {
-                    if (BGStuff.settingUpGame)
-                    {
-                        Device.BeginInvokeOnMainThread(() =>
+                    Device.BeginInvokeOnMainThread(() =>
                         {
-                            BGStuff.setupGame.Navigation.PopToRootAsync();
+                            BGStuff.reconnectionPage.Navigation.PopToRootAsync();
                         });
-                    }
+
                 }
             });
+        }
+
+        public string GetConnectedDeviceName()
+        {
+            return Socket.RemoteDevice.Name;
+        }
+
+        public string GetDeviceName()
+        {
+            return BtAdapter.Name;
         }
     }
 }

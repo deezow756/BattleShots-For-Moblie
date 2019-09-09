@@ -23,13 +23,18 @@ namespace BattleShots
             Labels.Add(txtTitle);
             Labels.Add(txtShotsLabel);
             Labels.Add(txtNumOfShotsLeft);
+            Labels.Add(txtEnReadyLabel);
             ApplyTheme();
             bluetooth = bluetoothMag;
             this.gameSettings = gameSettings;
             BGStuff.setUpGame2 = this;
+            btnContinue.IsEnabled = false;
+            txtEnReady.Text = "Not Ready";
+            txtEnReady.TextColor = Color.Red;
             Master = bluetooth.GetMaster();
             bluetooth.ReadMessage();
-            txtNumOfShotsLeft.Text = gameSettings.NumOfShots.ToString();
+            ShotsLeft = gameSettings.NumOfShots;
+            txtNumOfShotsLeft.Text = ShotsLeft.ToString(); 
             SetupGameGrid setupGameGrid = new SetupGameGrid(this, MainLayout, gameSettings);
         }
 
@@ -54,24 +59,19 @@ namespace BattleShots
         public void GridButton_Clicked(object sender, EventArgs e)
         {
             var btn = (Button)sender;
-            if (ShotsLeft > 0)
+
+            if (btn.Text != "X")
             {
-                if (btn.Text != "X")
+                if (!((ShotsLeft - 1) < 0))
                 {
                     ShotsLeft -= 1;
                     btn.Text = "X";
                     gameSettings.ShotCoodinates.Add(btn.ClassId);
                 }
-                else
-                {
-                    ShotsLeft += 1;
-                    btn.Text = "";
-                    gameSettings.ShotCoodinates.Remove(btn.ClassId);
-                }
             }
             else
             {
-                if(btn.Text == "X")
+                if (!((ShotsLeft + 1) > gameSettings.NumOfShots))
                 {
                     ShotsLeft += 1;
                     btn.Text = "";
@@ -79,6 +79,38 @@ namespace BattleShots
                 }
             }
 
+            txtNumOfShotsLeft.Text = ShotsLeft.ToString();
+
+            if(ShotsLeft == 0)
+            {
+                btnContinue.IsEnabled = true;
+            }
+            else
+            {
+                btnContinue.IsEnabled = false;
+                gameSettings.Ready = false;
+                bluetooth.SendMessage("unready");
+            }
+        }
+
+        public void SetEnemyReady(bool ready)
+        {
+            if(ready)
+            {
+                gameSettings.EnemyReady = true;
+                txtEnReady.Text = "Ready";
+                txtEnReady.TextColor = Color.Green;
+                if(gameSettings.Ready)
+                {
+                    Continue();
+                }
+            }
+            else
+            {
+                gameSettings.EnemyReady = false;
+                txtEnReady.Text = "Not Ready";
+                txtEnReady.TextColor = Color.Red;
+            }
         }
 
         #region Theme Stuff
@@ -127,7 +159,18 @@ namespace BattleShots
 
         private void BtnContinue_Clicked(object sender, EventArgs e)
         {
+            bluetooth.SendMessage("ready");
+            gameSettings.Ready = true;
+        }
 
+        private void Continue()
+        {
+            BGStuff.settingUpGame2 = false;
+            Navigation.PushAsync(new Game(bluetooth, gameSettings));
+        }
+        public void Reconnect()
+        {
+            Navigation.PushAsync(new ReconnectionPage(bluetooth));
         }
     }
 }

@@ -64,5 +64,10 @@ namespace BattleShots
         {
             DependencyService.Get<IBluetooth>().CancelReconnection();
         }
+
+        public string GetConnectedDeviceName()
+        {
+            return DependencyService.Get<IBluetooth>().GetConnectedDeviceName();
+        }
     }
 }

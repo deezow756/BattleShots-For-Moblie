@@ -8,14 +8,20 @@
              x:Class="BattleShots.SetupGame2"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout>
-                <Label x:Name="txtTitle" Text="SetUpShots" FontSize="Large" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="Start"/>
-                <Label x:Name="txtShotsLabel" Text="Shots Left To Place" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalOptions="Center"/>
-                <Label x:Name="txtNumOfShotsLeft" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"VerticalOptions="Center"/>
-                <StackLayout x:Name="MainLayout" HorizontalOptions="Center" VerticalOptions="Center"/>
-                <Button x:Name="btnContinue" Text="Lets Play!" Clicked="BtnContinue_Clicked" HorizontalOptions="CenterAndExpand" VerticalOptions="End"/>
+        <StackLayout>
+            <Label x:Name="txtTitle" Text="SetUpShots" FontSize="Large" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="Start"/>
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Label x:Name="txtShotsLabel" Text="Shots Left To Place" FontSize="Medium" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand"/>
+                <Label x:Name="txtNumOfShotsLeft" FontSize="Large" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand"/>
             </StackLayout>
-        </ScrollView>
+            <StackLayout x:Name="MainLayout" HorizontalOptions="CenterAndExpand">
+
+            </StackLayout>
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Label x:Name="txtEnReadyLabel" Text="Opponent" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                <Label x:Name="txtEnReady" Text="" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+            </StackLayout>
+            <Button x:Name="btnContinue" Text="Lets Play!" Clicked="BtnContinue_Clicked" HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

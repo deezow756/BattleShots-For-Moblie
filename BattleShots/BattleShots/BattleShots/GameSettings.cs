@@ -7,6 +7,8 @@ namespace BattleShots
 {
     public class GameSettings
     {
+        public string ConnectedDeviceName { get; set; }
+        public bool Master { get; set; }
         public string YourName { get; set; }
         public string EnemyName { get; set; }
         private int sizeOfGrid;
@@ -27,6 +29,8 @@ namespace BattleShots
         public Button[,] GridButtons;
 
         public List<string> ShotCoodinates = new List<string>();
+        public bool Ready { get; set; }
+        public bool EnemyReady { get; set; }
 
         public GameSettings()
         {

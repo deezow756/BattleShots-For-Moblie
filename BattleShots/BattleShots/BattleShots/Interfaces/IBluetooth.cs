@@ -18,5 +18,6 @@ namespace BattleShots
 
         bool GetMaster();
         void CancelReconnection();
+        string GetConnectedDeviceName();
     }
 }

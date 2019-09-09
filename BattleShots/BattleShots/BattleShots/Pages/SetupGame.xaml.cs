@@ -13,22 +13,35 @@ namespace BattleShots
     public partial class SetupGame : ContentPage
     {
         public BluetoothMag bluetooth { get; set; }
-        public GameSettings gameSettings { get; set; }
-        public bool Master { get; set; }
-        public const int MaxNumOfShots = 10;
+        public GameSettings settings { get; set; }
 
-        public int SizeOfGrid { get; set; }
-        public int NumOfShots { get; set; }
+        public const int MaxNumOfShots = 10;
 
         public SetupGame(BluetoothMag bluetoothMag)
         {
             InitializeComponent();
             bluetooth = bluetoothMag;
+            Setup();
+        }
+
+        public void Setup()
+        {
             BGStuff.setupGame = this;
             BGStuff.settingUpGame = true;
-            gameSettings = new GameSettings();
-            Master = bluetoothMag.GetMaster();
-            if(!Master)
+            settings = new GameSettings();
+            bluetooth.ReadMessage();
+            settings.Master = bluetooth.GetMaster();
+            settings.ConnectedDeviceName = bluetooth.GetConnectedDeviceName();
+            FileManager file = new FileManager();
+            if (settings.Master)
+            {
+                if (file.CheckForExistingGame(settings.ConnectedDeviceName))
+                {
+                    settings = file.GetGameSettings(settings.ConnectedDeviceName);
+                    ResumeGame();
+                }
+            }
+            else
             {
                 entryNumOfShots.IsReadOnly = true;
                 btnContinue.IsEnabled = false;
@@ -43,7 +56,68 @@ namespace BattleShots
             Buttons.Add(btnContinue);
             Pickers.Add(pickerSizeOfBoard);
             ApplyTheme();
-            bluetoothMag.ReadMessage();
+        }
+
+        public async void ResumeGame()
+        {
+            var result = await DisplayAlert("Detected Game", "Would You Like To Resume Game With Player", "Yes", "No");
+
+            if (result)
+            {
+                bluetooth.SendMessage("resume");
+                GoToGame();
+            }
+            else
+            {
+                FileManager file = new FileManager();
+                file.DeleteGameSetting(settings.ConnectedDeviceName);
+                Setup();
+            }
+            bluetooth.SendMessage("resume");
+        }
+
+        public async void ReceiveResume()
+        {
+            FileManager file = new FileManager();
+            if (file.CheckForExistingGame(settings.ConnectedDeviceName))
+            {
+                var result = await DisplayAlert("Resume Game Request", "Would You Like To Resume Game With " + settings.ConnectedDeviceName, "Yes", "No");
+
+                if (result)
+                {
+                    bluetooth.SendMessage("accept");
+                    settings = file.GetGameSettings(settings.ConnectedDeviceName);
+                    GoToGame();
+                }
+                else
+                {
+                    bluetooth.SendMessage("reject");
+                    file.DeleteGameSetting(settings.ConnectedDeviceName);
+                    Setup();
+                }
+            }
+            else
+            {
+                bluetooth.SendMessage("reject");
+                Setup();
+            }
+        }
+
+        public void AcceptResume()
+        {
+            GoToGame();
+        }
+
+        public void RejectResume()
+        {
+            FileManager file = new FileManager();
+            file.DeleteGameSetting(settings.ConnectedDeviceName);
+            Setup();
+        }
+
+        public void GoToGame()
+        {
+            Navigation.PushAsync(new Game(bluetooth, settings));
         }
 
         protected override bool OnBackButtonPressed()
@@ -67,20 +141,20 @@ namespace BattleShots
             switch(pickerSizeOfBoard.SelectedIndex)
             {
                 case 0:
-                    gameSettings.SizeOfGrid = 6;
+                    settings.SizeOfGrid = 6;
                     break;
                 case 1:
-                    gameSettings.SizeOfGrid = 8;
+                    settings.SizeOfGrid = 8;
                     break;
                 case 2:
-                    gameSettings.SizeOfGrid = 10;
+                    settings.SizeOfGrid = 10;
                     break;
                 default:
-                    gameSettings.SizeOfGrid = 6;
+                    settings.SizeOfGrid = 6;
                     break;
             }
 
-            bluetooth.SendMessage(gameSettings.SizeOfGrid + "," + "g");
+            bluetooth.SendMessage(settings.SizeOfGrid + "," + "g");
         }
 
         public static void StatSetPicker(string SizeOfGrid)
@@ -90,7 +164,7 @@ namespace BattleShots
 
         public void SetPicker(string sizeOfGrid)
         {
-            gameSettings.SizeOfGrid = int.Parse(sizeOfGrid);
+            settings.SizeOfGrid = int.Parse(sizeOfGrid);
             switch(sizeOfGrid)
             {
                 case "6":
@@ -122,7 +196,7 @@ namespace BattleShots
                     if (intTemp <= MaxNumOfShots)
                     {
                         bluetooth.SendMessage(intTemp.ToString() + ",s");
-                        gameSettings.NumOfShots = intTemp;
+                        settings.NumOfShots = intTemp;
                     }
                     else
                     {
@@ -139,7 +213,7 @@ namespace BattleShots
             else
             {
                 bluetooth.SendMessage(",s");
-                gameSettings.NumOfShots = 0;
+                settings.NumOfShots = 0;
             }
         }
 
@@ -153,11 +227,11 @@ namespace BattleShots
             entryNumOfShots.Text = numOfShots;
             try
             {
-                gameSettings.NumOfShots = int.Parse(numOfShots);
+                settings.NumOfShots = int.Parse(numOfShots);
             }
             catch(Exception ex)
             {
-                gameSettings.NumOfShots = 0;
+                settings.NumOfShots = 0;
             }
         }
         private void EntName_TextChanged(object sender, TextChangedEventArgs e)
@@ -170,7 +244,7 @@ namespace BattleShots
                 try
                 {
                         bluetooth.SendMessage(stringTemp + ",n");
-                        gameSettings.YourName = stringTemp;
+                        settings.YourName = stringTemp;
                 }
                 catch (Exception ex)
                 {
@@ -190,7 +264,7 @@ namespace BattleShots
 
         public void SetEnemyName(string emName)
         {
-            gameSettings.EnemyName = emName;
+            settings.EnemyName = emName;
         }
 
         public static void StatGoToSetup2()
@@ -200,26 +274,26 @@ namespace BattleShots
 
         private void BtnContinue_Clicked(object sender, EventArgs e)
         {
-            if ((gameSettings.EnemyName != null) && gameSettings.NumOfShots > 0 && gameSettings.SizeOfGrid > 0 && (gameSettings.YourName != null))
+            if ((settings.EnemyName != null) && settings.NumOfShots > 0 && settings.SizeOfGrid > 0 && (settings.YourName != null))
             {
                 bluetooth.SendMessage("Setup2");
                 GoToSetup2();
             }
             else
             {
-                if(gameSettings.EnemyName == null)
+                if(settings.EnemyName == null)
                 {
                     ToastManager.Show("Enemy Not Entered Name Yet");
                 }
-                else if(gameSettings.NumOfShots == 0)
+                else if(settings.NumOfShots == 0)
                 {
                     ToastManager.Show("Number Of Shots Hasn't Been Selected");
                 }
-                else if (gameSettings.SizeOfGrid == 0)
+                else if (settings.SizeOfGrid == 0)
                 {
                     ToastManager.Show("Size Of Grid Hasn't Been Selected");
                 }
-                else if(gameSettings.YourName == null)
+                else if(settings.YourName == null)
                 {
                     ToastManager.Show("Please Enter A Name");
                 }
@@ -229,7 +303,7 @@ namespace BattleShots
         public void GoToSetup2()
         {
             BGStuff.settingUpGame = false;
-            Navigation.PushAsync(new SetupGame2(bluetooth, gameSettings));
+            Navigation.PushAsync(new SetupGame2(bluetooth, settings));
         }
 
         public void Reconnect()
