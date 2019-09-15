@@ -66,7 +66,7 @@ namespace BattleShots
                 {
                     ShotsLeft -= 1;
                     btn.Text = "X";
-                    gameSettings.ShotCoodinates.Add(btn.ClassId);
+                    gameSettings.YourShotCoodinates.Add(btn.ClassId);
                 }
             }
             else
@@ -75,7 +75,7 @@ namespace BattleShots
                 {
                     ShotsLeft += 1;
                     btn.Text = "";
-                    gameSettings.ShotCoodinates.Remove(btn.ClassId);
+                    gameSettings.YourShotCoodinates.Remove(btn.ClassId);
                 }
             }
 

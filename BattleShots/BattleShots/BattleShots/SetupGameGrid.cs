@@ -106,7 +106,6 @@ namespace BattleShots
                             };
                             button.Clicked += SetupGame2.GridButton_Clicked;
                             stack.Children.Add(button);
-                            gameSettings.GridButtons[i, j] = button;
                         }
                     }
                 }
@@ -129,7 +128,6 @@ namespace BattleShots
             };
 
             return label;
-        }
-        
+        }        
     }
 }

@@ -20,15 +20,18 @@ namespace BattleShots
             }
             set
             {
-                GridButtons = new Button[value, value];
+                YourGrid = new Button[value, value];
+                EnemyGrid = new Button[value, value];
                 sizeOfGrid = value;                
             }
         }
         public int NumOfShots { get; set; }
 
-        public Button[,] GridButtons;
+        public Button[,] EnemyGrid;
 
-        public List<string> ShotCoodinates = new List<string>();
+        public Button[,] YourGrid;
+
+        public List<string> YourShotCoodinates = new List<string>();
         public bool Ready { get; set; }
         public bool EnemyReady { get; set; }
 

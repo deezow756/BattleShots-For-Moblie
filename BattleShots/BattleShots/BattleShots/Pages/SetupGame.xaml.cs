@@ -36,8 +36,7 @@ namespace BattleShots
             if (settings.Master)
             {
                 if (file.CheckForExistingGame(settings.ConnectedDeviceName))
-                {
-                    settings = file.GetGameSettings(settings.ConnectedDeviceName);
+                {                    
                     ResumeGame();
                 }
             }
@@ -71,9 +70,7 @@ namespace BattleShots
             {
                 FileManager file = new FileManager();
                 file.DeleteGameSetting(settings.ConnectedDeviceName);
-                Setup();
             }
-            bluetooth.SendMessage("resume");
         }
 
         public async void ReceiveResume()
@@ -105,14 +102,17 @@ namespace BattleShots
 
         public void AcceptResume()
         {
+            ToastManager.Show("Resuming Game");
+            FileManager file = new FileManager();
+            settings = file.GetGameSettings(settings.ConnectedDeviceName);
             GoToGame();
         }
 
         public void RejectResume()
         {
+            ToastManager.Show("Resume Game Rejected");
             FileManager file = new FileManager();
             file.DeleteGameSetting(settings.ConnectedDeviceName);
-            Setup();
         }
 
         public void GoToGame()

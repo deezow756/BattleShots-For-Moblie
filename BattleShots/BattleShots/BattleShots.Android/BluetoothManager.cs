@@ -492,23 +492,30 @@ namespace BattleShots.Droid
                                     {
                                          Device.BeginInvokeOnMainThread(() =>
                                         {
-                                            ToastLoader toast = new ToastLoader();
-                                            toast.Show(split[0]);
                                             SetupGame.StatSetEnemyName(split[0]);
                                         });
                                     }
                                 }
                                 else if(message.Contains("resume"))
                                 {
-                                    BGStuff.setupGame.ReceiveResume();
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        BGStuff.setupGame.ReceiveResume();
+                                    });
                                 }
                                 else if (message.Contains("accept"))
                                 {
-                                    BGStuff.setupGame.AcceptResume();
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        BGStuff.setupGame.AcceptResume();
+                                    });
                                 }
                                 else if (message.Contains("reject"))
                                 {
-                                    BGStuff.setupGame.RejectResume();
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        BGStuff.setupGame.RejectResume();
+                                    });
                                 }
                                 else if(message.Contains("Setup2"))
                                 {
@@ -522,17 +529,71 @@ namespace BattleShots.Droid
                             {
                                 if (message.Contains("ready"))
                                 {
-                                    BGStuff.setUpGame2.SetEnemyReady(true);
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        BGStuff.setUpGame2.SetEnemyReady(true);
+                                    });
                                 }
                                 else if(message.Contains("unready"))
                                 {
-                                    BGStuff.setUpGame2.SetEnemyReady(false);
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        BGStuff.setUpGame2.SetEnemyReady(false);
+                                    });
                                 }
                             }
                             else if(BGStuff.InGame)
                             {
+                                if (message.Contains(","))
+                                {
+                                    string[] split = message.Split(',');
 
-                            }
+                                    if (split[1].Contains("gofirst"))
+                                    {
+                                        Device.BeginInvokeOnMainThread(() =>
+                                        {
+                                            BGStuff.game.GoesFirst(int.Parse(split[0]));
+                                        });
+                                    }
+                                    else
+                                    {
+                                        Device.BeginInvokeOnMainThread(() =>
+                                        {
+                                            BGStuff.game.ReceiveCheck(message);
+                                        });
+                                    }
+                                }
+                                else
+                                {
+                                    if (message.Contains("hit"))
+                                    {
+                                        Device.BeginInvokeOnMainThread(() =>
+                                        {
+                                            BGStuff.game.ReceiveHit(true);
+                                        });
+                                    }
+                                    else if (message.Contains("miss"))
+                                    {
+                                        Device.BeginInvokeOnMainThread(() =>
+                                        {
+                                            BGStuff.game.ReceiveHit(false);
+                                        });
+                                    }
+                                    else if (message.Contains("ready"))
+                                    {
+                                        Device.BeginInvokeOnMainThread(() =>
+                                        {
+                                            BGStuff.game.Ready();
+                                        });
+                                    }
+                                    else if (message.Contains("endgame"))
+                                    {
+                                        Device.BeginInvokeOnMainThread(() =>
+                                        {
+                                            BGStuff.game.EndGame();
+                                        });
+                                    }
+                                }
                             buffer = new byte[1028];
                         }
                     }

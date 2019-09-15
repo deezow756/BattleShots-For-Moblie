@@ -7,9 +7,12 @@
              x:Class="BattleShots.Game">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <StackLayout>
+                <Label x:Name="txtNumOfShots" HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+            <StackLayout x:Name="MainStack">
+                
+            </StackLayout>            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
