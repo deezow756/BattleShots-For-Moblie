@@ -32,17 +32,32 @@ namespace BattleShots
 
                 if (i == -1)
                 {
+                    Label flabel = new Label()
+                    {
+                        Text = " ",
+                        TextColor = Theme.LabelTextColour,
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        VerticalTextAlignment = TextAlignment.Center,
+                        HeightRequest = buttonSize / 2,
+                        WidthRequest = buttonSize / 2,
+                        MinimumHeightRequest = buttonSize / 2,
+                        MinimumWidthRequest = buttonSize / 2
+                    };
+                    stack.Children.Add(flabel);
                     for (int j = 0; j < gameSettings.SizeOfGrid; j++)
                     {
                         Label label = new Label()
                         {
                             Text = (j + 1).ToString(),
                             TextColor = Theme.LabelTextColour,
+                            HorizontalOptions = LayoutOptions.CenterAndExpand,
+                            HorizontalTextAlignment = TextAlignment.Center,
+                            VerticalTextAlignment = TextAlignment.Center,
                             HeightRequest = buttonSize,
                             WidthRequest = buttonSize,
                             MinimumHeightRequest = buttonSize,
-                            MinimumWidthRequest = buttonSize,
-                            HorizontalOptions = LayoutOptions.CenterAndExpand
+                            MinimumWidthRequest = buttonSize
                         };
                         stack.Children.Add(label);
                     }
@@ -120,11 +135,13 @@ namespace BattleShots
             {
                 Text = Text,
                 TextColor = Theme.LabelTextColour,
-                HeightRequest = buttonSize,
-                WidthRequest = buttonSize,
-                MinimumHeightRequest = buttonSize,
-                MinimumWidthRequest = buttonSize,
-                HorizontalOptions = LayoutOptions.CenterAndExpand
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Center,
+                HeightRequest = buttonSize / 2,
+                WidthRequest = buttonSize / 2,
+                MinimumHeightRequest = buttonSize / 2,
+                MinimumWidthRequest = buttonSize / 2
             };
 
             return label;

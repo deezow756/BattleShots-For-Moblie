@@ -9,12 +9,14 @@ namespace BattleShots
     {
         Game game;
         StackLayout mainStack;
+        StackLayout secStack;
         GameSettings gameSettings;
 
-        public GameGrid(Game game, StackLayout mainStack, GameSettings gameSettings)
+        public GameGrid(Game game, StackLayout mainStack, StackLayout secStack, GameSettings gameSettings)
         {
             this.game = game;
             this.mainStack = mainStack;
+            this.secStack = secStack;
             this.gameSettings = gameSettings;
             Execute();
         }
@@ -27,12 +29,14 @@ namespace BattleShots
             mainStack.Children.Add(new Label()
             {
                 Text = gameSettings.EnemyName + "'s",
-                FontSize = 30,
+                FontSize = 25,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalTextAlignment = TextAlignment.Center,
                 TextColor = Theme.LabelTextColour,
                 BackgroundColor = Theme.BgColour
             });
 
-            for (int i = -1; i < gameSettings.SizeOfGrid; i++)
+            for (double i = -1; i < gameSettings.SizeOfGrid; i++)
             {
                 StackLayout stack = new StackLayout();
                 stack.Orientation = StackOrientation.Horizontal;
@@ -57,7 +61,7 @@ namespace BattleShots
                 }
                 else
                 {
-                    for (int j = -1; j < gameSettings.SizeOfGrid; j++)
+                    for (double j = -1; j < gameSettings.SizeOfGrid; j++)
                     {
                         if (j == -1)
                         {
@@ -114,7 +118,8 @@ namespace BattleShots
                             };
                             button.Clicked += game.GridButton_Clicked;
                             stack.Children.Add(button);
-                            gameSettings.EnemyGrid[i, j] = button;
+
+                            gameSettings.EnemyGrid[(int)i, (int)j] = button;
                         }
                     }
                 }
@@ -123,15 +128,17 @@ namespace BattleShots
 
             buttonSize = buttonSize / 2;
 
-            mainStack.Children.Add(new Label()
+            secStack.Children.Add(new Label()
             {
                 Text = "Yours",
-                FontSize = 30,
+                FontSize = 25,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalTextAlignment = TextAlignment.Center,
                 TextColor = Theme.LabelTextColour,
                 BackgroundColor = Theme.BgColour
-            });
+            }) ;
 
-            for (int i = -1; i < gameSettings.SizeOfGrid; i++)
+            for (double i = -1; i < gameSettings.SizeOfGrid; i++)
             {
                 StackLayout stack = new StackLayout();
                 stack.Orientation = StackOrientation.Horizontal;
@@ -139,24 +146,39 @@ namespace BattleShots
 
                 if (i == -1)
                 {
+                    Label flabel = new Label()
+                    {
+                        Text = " ",
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        VerticalTextAlignment = TextAlignment.Center,
+                        TextColor = Theme.LabelTextColour,
+                        HeightRequest = buttonSize,
+                        WidthRequest = buttonSize,
+                        MinimumHeightRequest = buttonSize,
+                        MinimumWidthRequest = buttonSize
+                    };
+                    stack.Children.Add(flabel);
                     for (int j = 0; j < gameSettings.SizeOfGrid; j++)
                     {
                         Label label = new Label()
                         {
                             Text = (j + 1).ToString(),
+                            HorizontalOptions = LayoutOptions.CenterAndExpand,
+                            HorizontalTextAlignment = TextAlignment.Center,
+                            VerticalTextAlignment = TextAlignment.Center,
                             TextColor = Theme.LabelTextColour,
                             HeightRequest = buttonSize,
                             WidthRequest = buttonSize,
                             MinimumHeightRequest = buttonSize,
-                            MinimumWidthRequest = buttonSize,
-                            HorizontalOptions = LayoutOptions.CenterAndExpand
+                            MinimumWidthRequest = buttonSize
                         };
                         stack.Children.Add(label);
                     }
                 }
                 else
                 {
-                    for (int j = -1; j < gameSettings.SizeOfGrid; j++)
+                    for (double j = -1; j < gameSettings.SizeOfGrid; j++)
                     {
                         if (j == -1)
                         {
@@ -215,9 +237,8 @@ namespace BattleShots
                                     HorizontalOptions = LayoutOptions.CenterAndExpand
                                 };
 
-                                button.Clicked += game.GridButton_Clicked;
                                 stack.Children.Add(button);
-                                gameSettings.YourGrid[i, j] = button;
+                                gameSettings.YourGrid[(int)i, (int)j] = button;
                             }
                             else
                             {
@@ -236,13 +257,13 @@ namespace BattleShots
                                 };
 
                                 stack.Children.Add(button);
-                                gameSettings.YourGrid[i, j] = button;
+                                gameSettings.YourGrid[(int)i, (int)j] = button;
                             }
                         }
                     }
                 }
 
-                mainStack.Children.Add(stack);
+                secStack.Children.Add(stack);
             }
         }
 
@@ -252,11 +273,13 @@ namespace BattleShots
             {
                 Text = Text,
                 TextColor = Theme.LabelTextColour,
-                HeightRequest = buttonSize,
-                WidthRequest = buttonSize,
-                MinimumHeightRequest = buttonSize,
-                MinimumWidthRequest = buttonSize,
-                HorizontalOptions = LayoutOptions.CenterAndExpand
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Center,
+                HeightRequest = buttonSize / 2,
+                WidthRequest = buttonSize / 2,
+                MinimumHeightRequest = buttonSize / 2,
+                MinimumWidthRequest = buttonSize / 2,
             };
 
             return label;

@@ -20,11 +20,12 @@ namespace BattleShots
             BGStuff.game = this;
             BGStuff.InGame = true;
             Labels.Add(txtNumOfShots);
+            Labels.Add(txtLabeltxtNumOfShots);
             ApplyTheme();
-            txtNumOfShots.Text = settings.NumOfShots.ToString();
             this.bluetooth = bluetooth;
             this.settings = gameSettings;
-            GameGrid grid = new GameGrid(this, MainStack, settings);
+            txtNumOfShots.Text = settings.NumOfShots.ToString();            
+            GameGrid grid = new GameGrid(this, MainStack, SecStack, settings);
             IsEnableEnemyGrid(false);
 
             // check for who goes first
@@ -107,7 +108,7 @@ namespace BattleShots
             }
             else
             {
-                ToastManager.Show("Miss!, " + settings.EnemyName + "'s Turn");
+                ToastManager.Show("Miss!");
                 bluetooth.SendMessage("ready");
             }
         }

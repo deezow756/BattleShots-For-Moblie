@@ -23,7 +23,6 @@ namespace BattleShots
             bluetooth = bluetoothMag;
             Setup();
         }
-
         public void Setup()
         {
             BGStuff.setupGame = this;
@@ -35,10 +34,10 @@ namespace BattleShots
             FileManager file = new FileManager();
             if (settings.Master)
             {
-                if (file.CheckForExistingGame(settings.ConnectedDeviceName))
-                {                    
-                    ResumeGame();
-                }
+                //if (file.CheckForExistingGame(settings.ConnectedDeviceName))
+                //{                    
+                //    ResumeGame();
+                //}
             }
             else
             {
@@ -216,7 +215,6 @@ namespace BattleShots
                 settings.NumOfShots = 0;
             }
         }
-
 
         public static void StatSetNumOfShotsEntry(string _numOfShots)
         {

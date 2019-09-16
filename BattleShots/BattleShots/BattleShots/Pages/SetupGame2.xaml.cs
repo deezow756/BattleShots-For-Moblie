@@ -28,6 +28,7 @@ namespace BattleShots
             bluetooth = bluetoothMag;
             this.gameSettings = gameSettings;
             BGStuff.setUpGame2 = this;
+            BGStuff.settingUpGame2 = true;
             btnContinue.IsEnabled = false;
             txtEnReady.Text = "Not Ready";
             txtEnReady.TextColor = Color.Red;
@@ -76,6 +77,9 @@ namespace BattleShots
                     ShotsLeft += 1;
                     btn.Text = "";
                     gameSettings.YourShotCoodinates.Remove(btn.ClassId);
+                    btnContinue.IsEnabled = false;
+                    gameSettings.Ready = false;
+                    bluetooth.SendMessage("unready");
                 }
             }
 
@@ -85,12 +89,6 @@ namespace BattleShots
             {
                 btnContinue.IsEnabled = true;
             }
-            else
-            {
-                btnContinue.IsEnabled = false;
-                gameSettings.Ready = false;
-                bluetooth.SendMessage("unready");
-            }
         }
 
         public void SetEnemyReady(bool ready)
@@ -99,7 +97,7 @@ namespace BattleShots
             {
                 gameSettings.EnemyReady = true;
                 txtEnReady.Text = "Ready";
-                txtEnReady.TextColor = Color.Green;
+                txtEnReady.TextColor = Color.Blue;
                 if(gameSettings.Ready)
                 {
                     Continue();
@@ -161,10 +159,15 @@ namespace BattleShots
         {
             bluetooth.SendMessage("ready");
             gameSettings.Ready = true;
+            if(gameSettings.EnemyReady)
+            {
+                Continue();
+            }
         }
 
         private void Continue()
         {
+            ToastManager.Show("Game Started");
             BGStuff.settingUpGame2 = false;
             Navigation.PushAsync(new Game(bluetooth, gameSettings));
         }

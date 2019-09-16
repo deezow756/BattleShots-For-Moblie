@@ -409,7 +409,8 @@ namespace BattleShots.Droid
 
                             Device.BeginInvokeOnMainThread(() =>
                                 {
-                                    BGStuff.reconnectionPage.Navigation.PopAsync();
+                                    if(BGStuff.reconnectionPage != null)
+                                        BGStuff.reconnectionPage.Navigation.PopAsync();
                                 });
                             BGStuff.Reconnecting = false;
                             ReadMessage();
@@ -461,16 +462,17 @@ namespace BattleShots.Droid
                 {
                     var buffer = new byte[1028];
                     int numOfBytes;
-                    while (Socket.IsConnected)
+                    while (Socket.IsConnected && !Reading)
                     {
                         numOfBytes = inputStream.Read(buffer, 0, buffer.Length);
+                        Reading = true;
                         if (numOfBytes > 0)
                         {
                             string message = Encoding.ASCII.GetString(buffer);
                             if (BGStuff.settingUpGame)
-                            {                                
+                            {
                                 if (message.Contains(","))
-                                {                                    
+                                {
                                     string[] split;
                                     split = message.Split(',');
 
@@ -490,13 +492,13 @@ namespace BattleShots.Droid
                                     }
                                     else if (split[1].Contains("n"))
                                     {
-                                         Device.BeginInvokeOnMainThread(() =>
-                                        {
-                                            SetupGame.StatSetEnemyName(split[0]);
-                                        });
+                                        Device.BeginInvokeOnMainThread(() =>
+                                       {
+                                           SetupGame.StatSetEnemyName(split[0]);
+                                       });
                                     }
                                 }
-                                else if(message.Contains("resume"))
+                                else if (message.Contains("resume"))
                                 {
                                     Device.BeginInvokeOnMainThread(() =>
                                     {
@@ -517,32 +519,32 @@ namespace BattleShots.Droid
                                         BGStuff.setupGame.RejectResume();
                                     });
                                 }
-                                else if(message.Contains("Setup2"))
+                                else if (message.Contains("Setup2"))
                                 {
                                     Device.BeginInvokeOnMainThread(() =>
                                     {
                                         SetupGame.StatGoToSetup2();
                                     });
-                                }                               
-                            }
-                            else if(BGStuff.settingUpGame2)
-                            {
-                                if (message.Contains("ready"))
-                                {
-                                    Device.BeginInvokeOnMainThread(() =>
-                                    {
-                                        BGStuff.setUpGame2.SetEnemyReady(true);
-                                    });
                                 }
-                                else if(message.Contains("unready"))
+                            }
+                            else if (BGStuff.settingUpGame2)
+                            {
+                                if (message.Contains("unready"))
                                 {
                                     Device.BeginInvokeOnMainThread(() =>
                                     {
                                         BGStuff.setUpGame2.SetEnemyReady(false);
                                     });
                                 }
+                                else if (message.Contains("ready"))
+                                {
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        BGStuff.setUpGame2.SetEnemyReady(true);
+                                    });
+                                }
                             }
-                            else if(BGStuff.InGame)
+                            else if (BGStuff.InGame)
                             {
                                 if (message.Contains(","))
                                 {
@@ -594,10 +596,11 @@ namespace BattleShots.Droid
                                         });
                                     }
                                 }
-                            buffer = new byte[1028];
+                                buffer = new byte[1028];
+                            }
                         }
+                        Reading = false;
                     }
-                    Reconnect();
                 }
                 catch(Exception ex)
                 {
@@ -606,19 +609,18 @@ namespace BattleShots.Droid
                         ToastLoader toast = new ToastLoader();
                         toast.Show("Connection Lost");
 
-                        if(BGStuff.settingUpGame)
+                        if (BGStuff.settingUpGame)
                         {
                             BGStuff.setupGame.Reconnect();
                         }
-                        else if(BGStuff.settingUpGame2)
+                        else if (BGStuff.settingUpGame2)
                         {
                             BGStuff.setUpGame2.Reconnect();
                         }
-                        else if(BGStuff.InGame)
+                        else if (BGStuff.InGame)
                         {
                             BGStuff.game.Reconnect();
                         }
-                        
                     });
                     Reconnect();
                 }

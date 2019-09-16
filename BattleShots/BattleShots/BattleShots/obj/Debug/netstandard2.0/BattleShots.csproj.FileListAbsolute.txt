@@ -29,3 +29,5 @@ C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\Ba
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\Pages\SetupGame.xaml.g.cs
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\Pages\SetupGame2.xaml.g.cs
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\Pages\StartPage.xaml.g.cs
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\Pages\CoinFlip.xaml.g.cs
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots\obj\Debug\netstandard2.0\XamlC.stamp

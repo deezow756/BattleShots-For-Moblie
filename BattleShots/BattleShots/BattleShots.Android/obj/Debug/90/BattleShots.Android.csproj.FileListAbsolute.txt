@@ -998,3 +998,5 @@ C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\Ba
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\GridLayoutSpanSizeLookup.java
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\ScrollHelper.java
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\SimpleViewHolder.java
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\linksrc\Newtonsoft.Json.dll
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\assets\Newtonsoft.Json.dll

@@ -4,6 +4,7 @@ C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\Ba
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\assets\Java.Interop.dll
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\assets\Mono.Android.dll
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\assets\mscorlib.dll
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\assets\Newtonsoft.Json.dll
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\assets\System.Core.dll
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\assets\System.dll
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\assets\System.Numerics.dll
