@@ -106,11 +106,9 @@ namespace BattleShots
                         }
                         else
                         {
-                            Button button = new Button()
+                            ImageButton button = new ImageButton()
                             {
-                                BackgroundColor = Theme.ButtonBgColour,
-                                BorderColor = Theme.ButtonBorderColour,
-                                TextColor = Theme.ButtonTextColour,
+                                Source = FileManager.SRCGridButton,
                                 ClassId = i.ToString() + "," + j.ToString(),
                                 BorderWidth = 1,
                                 HeightRequest = buttonSize,

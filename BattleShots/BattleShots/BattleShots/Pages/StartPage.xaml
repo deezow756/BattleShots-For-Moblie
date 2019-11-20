@@ -9,8 +9,8 @@
              BackgroundColor="Green">
     <ContentPage.Content>
         <StackLayout>
-            <Label x:Name="txtTitle" Text="Battle Shots!" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
-            <Button x:Name="BtnStart" Text="Start" Clicked="BtnStart_Clicked">
+            <Image x:Name="startImage" Source="BattleShotsLabel.png" BackgroundColor="Transparent" HeightRequest="100" WidthRequest="100" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            <Button x:Name="BtnStart" Text="Start" Clicked="BtnStart_Clicked" VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="CommonStates">
                         <VisualState x:Name="Normal">

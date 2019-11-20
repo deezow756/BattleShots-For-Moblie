@@ -531,7 +531,6 @@ C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\Ba
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\flata\compiled.flata
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\R.txt
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\R.cs.flag
-C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\BattleShots.Android.csproj.CoreCompileInputs.cache
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\BattleShots.Android.dll
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\BattleShots.Android.pdb
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\bin\Debug\BattleShots.Android.dll
@@ -1000,3 +999,18 @@ C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\Ba
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\src\md51558244f76c53b6aeda52c8a337f2c37\SimpleViewHolder.java
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\linksrc\Newtonsoft.Json.dll
 C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\assets\Newtonsoft.Json.dll
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\res\drawable\gridbutton.png
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\res\drawable\gridbuttonwithshotglass.png
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\res\drawable\gridbuttonwithshotglasscross.png
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\res\drawable\buttonwithcross.png
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\res\drawable\shotglass.png
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\typemap.jm.arm64-v8a.s
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\typemap.jm.armeabi-v7a.s
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\typemap.jm.x86.s
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\typemap.jm.x86_64.s
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\typemap.mj.arm64-v8a.s
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\typemap.mj.armeabi-v7a.s
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\typemap.mj.x86.s
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\android\typemap.mj.x86_64.s
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\res\drawable\battleshotslabel.png
+C:\Users\dorre\Documents\GitHub\BattleShots-For-Moble\BattleShots\BattleShots\BattleShots.Android\obj\Debug\90\res\drawable\loadingimage.png

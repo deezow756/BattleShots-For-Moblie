@@ -173,70 +173,83 @@ namespace BattleShots.Droid
             }
         }
 
-        public async void PairToDevice(string name, bool known)
-        {            
-            if (BtAdapter.IsEnabled)
+        public void PairToDevice(string name, bool known)
+        {
+            Task.Run(async () =>
             {
-                if (BtAdapter.IsDiscovering)
+                if (BtAdapter.IsEnabled)
                 {
-                    BtAdapter.CancelDiscovery();
-                }
-
-                ReceivingConnection = false;
-
-                FileManager file = new FileManager();
-                file.SaveDevice(name);
-
-                BluetoothDevice Device = null;
-                if (known)
-                {
-                    foreach (BluetoothDevice device in PairedDevices)
+                    if (BtAdapter.IsDiscovering)
                     {
-                        if (device.Name == name)
+                        BtAdapter.CancelDiscovery();
+                    }
+
+                    ReceivingConnection = false;
+
+                    FileManager file = new FileManager();
+                    file.SaveDevice(name);
+
+                    BluetoothDevice Device = null;
+                    if (known)
+                    {
+                        foreach (BluetoothDevice device in PairedDevices)
                         {
-                            Device = device;
+                            if (device.Name == name)
+                            {
+                                Device = device;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    foreach (BluetoothDevice device in BGData.bluetoothDevices)
+                    else
                     {
-                        if (device.Name == name)
+                        foreach (BluetoothDevice device in BGData.bluetoothDevices)
                         {
-                            Device = device;
+                            if (device.Name == name)
+                            {
+                                Device = device;
+                            }
                         }
                     }
-                }
 
-                UUID uuid = UUID.FromString("00001101-0000-1000-8000-00805f9b34fb");
+                    UUID uuid = UUID.FromString("00001101-0000-1000-8000-00805f9b34fb");
 
-                if ((int)Android.OS.Build.VERSION.SdkInt >= 10) // Gingerbread 2.3.3 2.3.4
-                    Socket = Device.CreateInsecureRfcommSocketToServiceRecord(uuid);
-                else
-                    Socket = Device.CreateRfcommSocketToServiceRecord(uuid);
+                    if ((int)Android.OS.Build.VERSION.SdkInt >= 10) // Gingerbread 2.3.3 2.3.4
+                        Socket = Device.CreateInsecureRfcommSocketToServiceRecord(uuid);
+                    else
+                        Socket = Device.CreateRfcommSocketToServiceRecord(uuid);
 
-                if (Socket != null)
-                {
-                    try
+                    if (Socket != null)
                     {
-                        await Socket.ConnectAsync();                        
-                        Master = true;
-                        ToastLoader toastLoader = new ToastLoader();
-                        toastLoader.Show("Connected To Player");
-                        SetupChat();
-                        MainPage.StatSetupGame();
-                    }
-                    catch (Exception ex)
-                    {
-                        ToastLoader toastLoader = new ToastLoader();
-                        toastLoader.Show(ex.Message);
-                        ReceivingConnection = true;
-                        ReceivePair();
+                        try
+                        {
+                            await Socket.ConnectAsync();
+                            Master = true;
+                            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                            {
+                                ToastLoader toastLoader = new ToastLoader();
+                                toastLoader.Show("Connected To Player");
+                                BGStuff.mainPage.IsLoading = false;
+                                SetupChat();
+                                MainPage.StatSetupGame();
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            Xamarin.Forms.Device.BeginInvokeOnMainThread(() =>
+                            {
+                                ToastLoader toastLoader = new ToastLoader();
+                                toastLoader.Show(ex.Message);
+                                BGStuff.mainPage.IsLoading = false;
+                                ReceivingConnection = true;
+                                ReceivePair();
+                            });
+                        }
+
                     }
                 }
-            }
+            });
         }
+
 
         public bool Pairing = false;
         public void PairToDevice()
@@ -471,34 +484,7 @@ namespace BattleShots.Droid
                             string message = Encoding.ASCII.GetString(buffer);
                             if (BGStuff.settingUpGame)
                             {
-                                if (message.Contains(","))
-                                {
-                                    string[] split;
-                                    split = message.Split(',');
-
-                                    if (split[1].Contains("g"))
-                                    {
-                                        Device.BeginInvokeOnMainThread(() =>
-                                        {
-                                            SetupGame.StatSetPicker(split[0]);
-                                        });
-                                    }
-                                    else if (split[1].Contains("s"))
-                                    {
-                                        Device.BeginInvokeOnMainThread(() =>
-                                        {
-                                            SetupGame.StatSetNumOfShotsEntry(split[0]);
-                                        });
-                                    }
-                                    else if (split[1].Contains("n"))
-                                    {
-                                        Device.BeginInvokeOnMainThread(() =>
-                                       {
-                                           SetupGame.StatSetEnemyName(split[0]);
-                                       });
-                                    }
-                                }
-                                else if (message.Contains("resume"))
+                                if (message.Contains("resume"))
                                 {
                                     Device.BeginInvokeOnMainThread(() =>
                                     {
@@ -526,6 +512,33 @@ namespace BattleShots.Droid
                                         SetupGame.StatGoToSetup2();
                                     });
                                 }
+                                else if (message.Contains(","))
+                                {
+                                    string[] split;
+                                    split = message.Split(',');
+
+                                    if (split[1].Contains("grid"))
+                                    {
+                                        Device.BeginInvokeOnMainThread(() =>
+                                        {
+                                            SetupGame.StatSetPicker(split[0]);
+                                        });
+                                    }
+                                    else if (split[1].Contains("num"))
+                                    {
+                                        Device.BeginInvokeOnMainThread(() =>
+                                        {
+                                            SetupGame.StatSetNumOfShotsEntry(split[0]);
+                                        });
+                                    }
+                                    else if (split[1].Contains("nam"))
+                                    {
+                                        Device.BeginInvokeOnMainThread(() =>
+                                       {
+                                           SetupGame.StatSetEnemyName(split[0]);
+                                       });
+                                    }
+                                }                                
                             }
                             else if (BGStuff.settingUpGame2)
                             {
@@ -546,56 +559,58 @@ namespace BattleShots.Droid
                             }
                             else if (BGStuff.InGame)
                             {
-                                if (message.Contains(","))
+                                if (message.Contains("hit"))
+                                {
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        BGStuff.game.ReceiveHit(true);
+                                    });
+                                }
+                                else if (message.Contains("miss"))
+                                {
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        BGStuff.game.ReceiveHit(false);
+                                    });
+                                }
+                                else if (message.Contains("ready"))
+                                {
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        BGStuff.game.Ready();
+                                    });
+                                }
+                                else if (message.Contains("endgame"))
+                                {
+                                    Device.BeginInvokeOnMainThread(() =>
+                                    {
+                                        BGStuff.game.EndGame(false);
+                                    });
+                                }
+                                else if (message.Contains(","))
                                 {
                                     string[] split = message.Split(',');
+                                    int len = split[0].Length;
+                                    string temp = "";
 
-                                    if (split[1].Contains("gofirst"))
+                                    for (int i = 0; i < len; i++)
                                     {
-                                        Device.BeginInvokeOnMainThread(() =>
-                                        {
-                                            BGStuff.game.GoesFirst(int.Parse(split[0]));
-                                        });
+                                        temp += split[1][i];
                                     }
-                                    else
+
+                                    Device.BeginInvokeOnMainThread(() =>
                                     {
-                                        Device.BeginInvokeOnMainThread(() =>
-                                        {
-                                            BGStuff.game.ReceiveCheck(message);
-                                        });
-                                    }
+                                        BGStuff.game.ReceiveCheck(split[0] + "," + temp);
+                                    });
                                 }
-                                else
+                                else if (message.Contains("0") || message.Contains("1"))
                                 {
-                                    if (message.Contains("hit"))
+                                    Device.BeginInvokeOnMainThread(() =>
                                     {
-                                        Device.BeginInvokeOnMainThread(() =>
-                                        {
-                                            BGStuff.game.ReceiveHit(true);
-                                        });
-                                    }
-                                    else if (message.Contains("miss"))
-                                    {
-                                        Device.BeginInvokeOnMainThread(() =>
-                                        {
-                                            BGStuff.game.ReceiveHit(false);
-                                        });
-                                    }
-                                    else if (message.Contains("ready"))
-                                    {
-                                        Device.BeginInvokeOnMainThread(() =>
-                                        {
-                                            BGStuff.game.Ready();
-                                        });
-                                    }
-                                    else if (message.Contains("endgame"))
-                                    {
-                                        Device.BeginInvokeOnMainThread(() =>
-                                        {
-                                            BGStuff.game.EndGame();
-                                        });
-                                    }
+                                        BGStuff.game.GoesFirst(int.Parse(message));
+                                    });
                                 }
+
                                 buffer = new byte[1028];
                             }
                         }

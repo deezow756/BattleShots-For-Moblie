@@ -59,27 +59,27 @@ namespace BattleShots
 
         public void GridButton_Clicked(object sender, EventArgs e)
         {
-            var btn = (Button)sender;
-
-            if (btn.Text != "X")
-            {
-                if (!((ShotsLeft - 1) < 0))
-                {
-                    ShotsLeft -= 1;
-                    btn.Text = "X";
-                    gameSettings.YourShotCoodinates.Add(btn.ClassId);
-                }
-            }
-            else
+            var btn = (ImageButton)sender;
+            
+            if (gameSettings.YourShotCoodinates.Contains(btn.ClassId))
             {
                 if (!((ShotsLeft + 1) > gameSettings.NumOfShots))
                 {
                     ShotsLeft += 1;
-                    btn.Text = "";
+                    btn.Source = FileManager.SRCGridButton;
                     gameSettings.YourShotCoodinates.Remove(btn.ClassId);
                     btnContinue.IsEnabled = false;
                     gameSettings.Ready = false;
                     bluetooth.SendMessage("unready");
+                }                
+            }
+            else
+            {
+                if (!((ShotsLeft - 1) < 0))
+                {
+                    ShotsLeft -= 1;
+                    btn.Source = FileManager.SRCGridButtonShotGlass;
+                    gameSettings.YourShotCoodinates.Add(btn.ClassId);
                 }
             }
 

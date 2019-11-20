@@ -7,19 +7,22 @@
              x:Class="BattleShots.Game"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout x:Name="MainStack">
-                
-            </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <StackLayout x:Name="SecStack">
+        <ScrollView>
+            <StackLayout x:Name="PageStack">
+                <StackLayout x:Name="MainStack" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
 
                 </StackLayout>
-                <StackLayout>
-                    <Label x:Name="txtLabeltxtNumOfShots" HorizontalOptions="CenterAndExpand"/>
-                    <Label x:Name="txtNumOfShots" HorizontalOptions="CenterAndExpand"/>
-                </StackLayout>                
+                <Label x:Name="txtStatus" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <StackLayout x:Name="SecStack" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        
+                    </StackLayout>
+                    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                        <Image x:Name="imageShotGlass" WidthRequest="100" HeightRequest="100" MinimumHeightRequest="100" MinimumWidthRequest="100" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                        <Label x:Name="txtNumOfShots" FontSize="80" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

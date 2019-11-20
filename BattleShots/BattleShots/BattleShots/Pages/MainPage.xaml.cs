@@ -24,6 +24,9 @@ namespace BattleShots
         List<string> prevDeviceNames;
 
         bool firstboot = false;
+        
+        public Image LoadingImage;
+        public bool IsLoading = false;
 
         public MainPage()
         {
@@ -32,9 +35,7 @@ namespace BattleShots
             Buttons.Add(btnKnownDevices);
             Buttons.Add(btnDiscoverable);
             Buttons.Add(btnStartScan);
-            Labels.Add(txtTitle);
-            Labels.Add(txtNewDevices);
-            Labels.Add(txtPairedDevices);
+            LoadingImage = loadingImage;
             ApplyTheme();
             bluetoothMag = new BluetoothMag();
             bluetoothMag.SetupBt();
@@ -143,17 +144,45 @@ namespace BattleShots
         {
             bluetoothMag.EnableDiscoverable();
         }
-
         private void ViewCellKnown_Tapped(object sender, EventArgs e)
         {
             var vc = (ViewCell)sender;
+            Loading();
             bluetoothMag.PairToDevice(vc.ClassId, true);
         }
 
         private void ViewCell_Tapped(object sender, EventArgs e)
         {
             var vc = (ViewCell)sender;
+            Loading();
             bluetoothMag.PairToDevice(vc.ClassId, false);
+        }
+
+        private void Loading()
+        {
+            Task.Run(async () =>
+            {
+                IsLoading = true;
+                LoadingImage.TranslateTo(0, 0, 50);
+                await LoadingImage.ScaleTo(2, 50);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    LoadingImage.IsVisible = true;
+                    this.IsEnabled = false;
+                });
+                do
+                {
+                    await LoadingImage.RotateTo(60, 333);
+                    await LoadingImage.RotateTo(300, 333);
+                    await LoadingImage.RotateTo(360, 333);
+                    LoadingImage.Rotation = 0;
+                } while (IsLoading);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    LoadingImage.IsVisible = false;
+                    this.IsEnabled = true;
+                });
+            });
         }
 
         private void LstDiscoveredDevices_ItemTapped(object sender, ItemTappedEventArgs e)

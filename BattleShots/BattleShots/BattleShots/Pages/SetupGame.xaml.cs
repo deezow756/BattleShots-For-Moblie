@@ -153,7 +153,7 @@ namespace BattleShots
                     break;
             }
 
-            bluetooth.SendMessage(settings.SizeOfGrid + "," + "g");
+            bluetooth.SendMessage(settings.SizeOfGrid + "," + "grid");
         }
 
         public static void StatSetPicker(string SizeOfGrid)
@@ -163,21 +163,28 @@ namespace BattleShots
 
         public void SetPicker(string sizeOfGrid)
         {
-            settings.SizeOfGrid = int.Parse(sizeOfGrid);
-            switch(sizeOfGrid)
+            try
             {
-                case "6":
-                    pickerSizeOfBoard.SelectedIndex = 0;
-                    break;
-                case "8":
-                    pickerSizeOfBoard.SelectedIndex = 1;
-                    break;
-                case "10":
-                    pickerSizeOfBoard.SelectedIndex = 2;
-                    break;
-                default:
-                    pickerSizeOfBoard.SelectedIndex = -1;
-                    break;
+                settings.SizeOfGrid = int.Parse(sizeOfGrid);
+                switch (sizeOfGrid)
+                {
+                    case "6":
+                        pickerSizeOfBoard.SelectedIndex = 0;
+                        break;
+                    case "8":
+                        pickerSizeOfBoard.SelectedIndex = 1;
+                        break;
+                    case "10":
+                        pickerSizeOfBoard.SelectedIndex = 2;
+                        break;
+                    default:
+                        pickerSizeOfBoard.SelectedIndex = -1;
+                        break;
+                }
+            }
+            catch(Exception ex)
+            {
+
             }
         }
 
@@ -194,7 +201,7 @@ namespace BattleShots
                     intTemp = int.Parse(stringTemp);
                     if (intTemp <= MaxNumOfShots)
                     {
-                        bluetooth.SendMessage(intTemp.ToString() + ",s");
+                        bluetooth.SendMessage(intTemp.ToString() + ",num");
                         settings.NumOfShots = intTemp;
                     }
                     else
@@ -241,7 +248,7 @@ namespace BattleShots
             {
                 try
                 {
-                        bluetooth.SendMessage(stringTemp + ",n");
+                        bluetooth.SendMessage(stringTemp + ",nam");
                         settings.YourName = stringTemp;
                 }
                 catch (Exception ex)

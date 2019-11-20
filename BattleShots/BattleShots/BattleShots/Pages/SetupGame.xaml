@@ -8,7 +8,7 @@
              Padding="5,5,5,5"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="Fill" VerticalOptions="Fill">            
+        <StackLayout x:Name="MainStack" HorizontalOptions="Fill" VerticalOptions="Fill">            
             <Label x:Name="txtTitle" Text="Game Setup" FontSize="50" HorizontalOptions="CenterAndExpand"/>
             <Label x:Name="txtEnterName" Text="Enter Your Name" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
             <Entry x:Name="entName" Placeholder="Enter Name Here" TextChanged="EntName_TextChanged" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand"/>

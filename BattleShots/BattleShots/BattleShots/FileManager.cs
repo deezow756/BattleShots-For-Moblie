@@ -11,6 +11,12 @@ namespace BattleShots
         public string devicePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "device.txt");
         public string StoragePath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
+        public static string SRCGridButton = "GridButton.png";
+        public static string SRCGridButtonShotGlass = "GridButtonWithShotGlass.png";
+        public static string SRCGridButtonCross = "buttonWithCross.png";
+        public static string SRCGridButtonShotGlassCross = "GridButtonWithShotGlassCross.png";
+        public static string SRCShotGlass = "ShotGlass.png";
+
         public string GetDevice()
         {
             if (File.Exists(devicePath))

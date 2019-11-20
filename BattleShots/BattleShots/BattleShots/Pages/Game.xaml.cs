@@ -20,13 +20,15 @@ namespace BattleShots
             BGStuff.game = this;
             BGStuff.InGame = true;
             Labels.Add(txtNumOfShots);
-            Labels.Add(txtLabeltxtNumOfShots);
+            Labels.Add(txtStatus);
+            imageShotGlass.Source = FileManager.SRCShotGlass;
             ApplyTheme();
             this.bluetooth = bluetooth;
             this.settings = gameSettings;
+            settings.YourTurn = false;
+            settings.EnemyShots = settings.NumOfShots;
             txtNumOfShots.Text = settings.NumOfShots.ToString();            
             GameGrid grid = new GameGrid(this, MainStack, SecStack, settings);
-            IsEnableEnemyGrid(false);
 
             // check for who goes first
             if(settings.Master)
@@ -36,54 +38,63 @@ namespace BattleShots
                 if(ranNum == 1)
                 {
                     bluetooth.SendMessage(ranNum.ToString());
-                    ToastManager.Show("Enemy Goes First");
+                    txtStatus.Text = settings.EnemyName + "'s Goes First";
                 }
                 else
                 {
-                    ToastManager.Show("You Go First");
-                    IsEnableEnemyGrid(true);
+                    settings.YourTurn = true;
+                    bluetooth.SendMessage(ranNum.ToString());
+                    txtStatus.Text = "You Go First";
                 }
             }
-
         }
+
+        ImageButton btn;
 
         public void GridButton_Clicked(object sender, EventArgs e)
         {
-            var btn = (Button)sender;
+            if (settings.YourTurn)
+            {
+                btn = (ImageButton)sender;
 
-            IsEnableEnemyGrid(false);
-            bluetooth.SendMessage(btn.ClassId);
-            btn.Text = "X";
-        }
-
-        public void GridDisabled_Clicked(object sender, EventArgs e)
-        {
-            ToastManager.Show("Not Your Turn");
-        }
-
-        public void GridAlready_Clicked(object sender, EventArgs e)
-        {
-            ToastManager.Show("Already Tried This One");
+                settings.YourTurn = false;
+                ToastManager.Show(btn.ClassId);
+                settings.AllReadySelected.Add(btn.ClassId);
+                bluetooth.SendMessage(btn.ClassId);
+            }
+            else
+            {
+                ToastManager.Show("Not Your Turn");
+                Task.Run(async () =>
+                {
+                    uint timeout = 50;
+                    await MainStack.TranslateTo(-15, 0, timeout);
+                    await MainStack.TranslateTo(15, 0, timeout);
+                    await MainStack.TranslateTo(-9, 0, timeout);
+                    await MainStack.TranslateTo(9, 0, timeout);
+                    await MainStack.TranslateTo(-5, 0, timeout);
+                    await MainStack.TranslateTo(5, 0, timeout);
+                    await MainStack.TranslateTo(-2, 0, timeout);
+                    await MainStack.TranslateTo(2, 0, timeout);
+                    MainStack.TranslationX = 0;
+                });
+            }
         }
 
         public void ReceiveCheck(string coordenates)
         {
             string[] split = coordenates.Split(',');
-            bool hit = false;
 
-            foreach (string coord in settings.YourShotCoodinates)
+            if (settings.YourShotCoodinates.Contains(coordenates))
             {
-                if (coord == coordenates)
-                {
-                    settings.YourGrid[int.Parse(split[0]), int.Parse(split[1])].Text = "!";
-                    settings.YourShotCoodinates.Remove(coord);
-                    bluetooth.SendMessage("hit");
-                    ToastManager.Show("Drink Up!");
-                    hit = true;
-                }
+                settings.YourGrid[int.Parse(split[0]), int.Parse(split[1])].Source = FileManager.SRCGridButtonShotGlassCross;
+                settings.YourShotCoodinates.Remove(coordenates);
+                settings.NumOfShots -= 1;
+                txtNumOfShots.Text = settings.NumOfShots.ToString();
+                bluetooth.SendMessage("hit");
+                ToastManager.Show("Drink Up!");
             }
-
-            if(!hit)
+            else
             {
                 bluetooth.SendMessage("miss");
             }            
@@ -93,35 +104,42 @@ namespace BattleShots
         {
             if (value)
             {
-                settings.NumOfShots -= 1;
-                if (settings.NumOfShots == 0)
+                btn.Source = FileManager.SRCGridButtonShotGlassCross;
+                settings.EnemyShots -= 1;
+                if (settings.EnemyShots == 0)
                 {
                     ToastManager.Show("You Win");
                     bluetooth.SendMessage("endgame");
-                    EndGame();
+                    EndGame(true);
                 }
                 else
                 {
                     ToastManager.Show("Hit!");
                     bluetooth.SendMessage("ready");
+                    txtStatus.Text = settings.EnemyName + "'s Turn";
                 }
             }
             else
             {
+                btn.Source = FileManager.SRCGridButtonCross;
                 ToastManager.Show("Miss!");
                 bluetooth.SendMessage("ready");
+                txtStatus.Text = settings.EnemyName + "'s Turn";
             }
         }
 
         public void Ready()
         {
-            IsEnableEnemyGrid(true);
-            ToastManager.Show("Your Turn");
+            settings.YourTurn = true;
+            txtStatus.Text = "Your Turn";
         }
 
-        public void EndGame()
+        public void EndGame(bool value)
         {
-            ToastManager.Show("You Lose! Drink The Rest Of Your Shots!");
+            if (!value)            
+            {
+                ToastManager.Show("You Lose! Drink The Rest Of Your Shots!");
+            }
 
             Button btn = new Button
             {
@@ -131,7 +149,7 @@ namespace BattleShots
                 BorderColor = Theme.ButtonBorderColour
             };
             btn.Clicked += EndGame_Clicked;
-            MainStack.Children.Add(btn);
+            PageStack.Children.Add(btn);
 
         }
 
@@ -140,41 +158,16 @@ namespace BattleShots
             Navigation.PopToRootAsync();
         }
 
-        public void IsEnableEnemyGrid(bool value)
-        {
-            for (int i = 0; i < settings.SizeOfGrid; i++)
-            {
-                for (int j = 0; j < settings.SizeOfGrid; j++)
-                {
-                    if (value)
-                    {
-                        if (settings.EnemyGrid[i, j].Text == "X")
-                        {
-                            settings.EnemyGrid[i, j].Clicked += GridAlready_Clicked;
-                        }
-                        else
-                        {
-                            settings.EnemyGrid[i, j].Clicked += GridButton_Clicked;
-                        }
-                    }
-                    else
-                    {
-                        settings.EnemyGrid[i, j].Clicked += GridDisabled_Clicked;
-                    }
-                }
-            }
-        }
-
         public void GoesFirst(int value)
         {
             if (value == 1)
             {
-                ToastManager.Show("You Go First");
-                IsEnableEnemyGrid(true);
+                txtStatus.Text = "You Go First";
+                
             }
             else
             {
-                ToastManager.Show("Enemy Goes First");
+                txtStatus.Text = settings.EnemyName + "'s Goes First";
             }
         }
 

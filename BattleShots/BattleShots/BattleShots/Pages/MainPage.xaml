@@ -8,29 +8,27 @@
              x:Name="contentPage"
              NavigationPage.HasNavigationBar="False">
 
-    <StackLayout>
-        <Label x:Name="txtTitle" Text="Setup Connection" FontSize="Large" HorizontalOptions="CenterAndExpand"/>
-        <Button x:Name="btnKnownDevices" Text="Get Known Devices" Clicked="BtnKnownDevices_Clicked"/>
-        <Button x:Name="btnStartScan" Text="StartScan" Clicked="BtnStartScan_Clicked"/>
-        <Label x:Name="txtPairedDevices" Text="Paired Devices:" FontSize="Medium"/>
+    <StackLayout x:Name="MainStack">
+        <Button x:Name="btnKnownDevices" Text="Players Already Played" Clicked="BtnKnownDevices_Clicked"/>
         <ListView x:Name="lstPairedDevices" ItemTapped="LstPairedDevices_ItemTapped">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell Tapped="ViewCellKnown_Tapped" ClassId="{Binding Name}">
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding Name}" TextColor="{Binding TextColour}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                            <Label Text="{Binding Name}" TextColor="{Binding TextColour}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Label x:Name="txtNewDevices" Text="New Devices:" FontSize="Medium"/>
+        <Image x:Name="loadingImage" Source="LoadingImage.png" IsVisible="False"/>
+        <Button x:Name="btnStartScan" Text="Look For New Players" Clicked="BtnStartScan_Clicked"/>
         <ListView x:Name="lstDiscoveredDevices" ItemTapped="LstDiscoveredDevices_ItemTapped">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell Tapped="ViewCell_Tapped" ClassId="{Binding Name}">
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding Name}" TextColor="{Binding TextColour}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                            <Label Text="{Binding Name}" TextColor="{Binding TextColour}" FontSize="Large" HorizontalOptions="Center" VerticalOptions="Center"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

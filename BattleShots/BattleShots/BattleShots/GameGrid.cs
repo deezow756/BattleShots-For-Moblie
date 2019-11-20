@@ -44,17 +44,32 @@ namespace BattleShots
 
                 if (i == -1)
                 {
+                    Label flabel = new Label()
+                    {
+                        Text = " ",
+                        HorizontalOptions = LayoutOptions.CenterAndExpand,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        VerticalTextAlignment = TextAlignment.Center,
+                        TextColor = Theme.LabelTextColour,
+                        HeightRequest = buttonSize / 2,
+                        WidthRequest = buttonSize / 2,
+                        MinimumHeightRequest = buttonSize / 2,
+                        MinimumWidthRequest = buttonSize / 2
+                    };
+                    stack.Children.Add(flabel);
                     for (int j = 0; j < gameSettings.SizeOfGrid; j++)
                     {
                         Label label = new Label()
                         {
                             Text = (j + 1).ToString(),
                             TextColor = Theme.LabelTextColour,
+                            HorizontalOptions = LayoutOptions.CenterAndExpand,
+                            HorizontalTextAlignment = TextAlignment.Center,
+                            VerticalTextAlignment = TextAlignment.Center,
                             HeightRequest = buttonSize,
                             WidthRequest = buttonSize,
                             MinimumHeightRequest = buttonSize,
-                            MinimumWidthRequest = buttonSize,
-                            HorizontalOptions = LayoutOptions.CenterAndExpand
+                            MinimumWidthRequest = buttonSize
                         };
                         stack.Children.Add(label);
                     }
@@ -103,11 +118,9 @@ namespace BattleShots
                         }
                         else
                         {
-                            Button button = new Button()
+                            ImageButton button = new ImageButton()
                             {
-                                BackgroundColor = Theme.ButtonBgColour,
-                                BorderColor = Theme.ButtonBorderColour,
-                                TextColor = Theme.ButtonTextColour,
+                                Source = FileManager.SRCGridButton,
                                 ClassId = i.ToString() + "," + j.ToString(),
                                 BorderWidth = 1,
                                 HeightRequest = buttonSize,
@@ -222,12 +235,9 @@ namespace BattleShots
                         {
                             if (gameSettings.YourShotCoodinates.Contains(i.ToString() + "," + j.ToString()))
                             {
-                                Button button = new Button()
+                                ImageButton button = new ImageButton()
                                 {
-                                    Text = "X",
-                                    BackgroundColor = Theme.ButtonBgColour,
-                                    BorderColor = Theme.ButtonBorderColour,
-                                    TextColor = Theme.ButtonTextColour,
+                                    Source = FileManager.SRCGridButtonShotGlass,
                                     ClassId = i.ToString() + "," + j.ToString(),
                                     BorderWidth = 1,
                                     HeightRequest = buttonSize,
@@ -242,11 +252,9 @@ namespace BattleShots
                             }
                             else
                             {
-                                Button button = new Button()
+                                ImageButton button = new ImageButton()
                                 {
-                                    BackgroundColor = Theme.ButtonBgColour,
-                                    BorderColor = Theme.ButtonBorderColour,
-                                    TextColor = Theme.ButtonTextColour,
+                                    Source = FileManager.SRCGridButton,
                                     ClassId = i.ToString() + "," + j.ToString(),
                                     BorderWidth = 1,
                                     HeightRequest = buttonSize,
